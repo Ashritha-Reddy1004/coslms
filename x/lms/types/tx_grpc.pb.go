@@ -22,13 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MsgClient interface {
-	// RegisterAdmin adds a new admin
 	RegisterAdmin(ctx context.Context, in *RegisterAdminRequest, opts ...grpc.CallOption) (*RegisterAdminResponse, error)
-	// AddStudent adds new student
 	AddStudent(ctx context.Context, in *AddStudentRequest, opts ...grpc.CallOption) (*AddStudentResponse, error)
-	// ApplyLeave request a new leave
 	ApplyLeave(ctx context.Context, in *ApplyLeaveRequest, opts ...grpc.CallOption) (*ApplyLeaveResponse, error)
-	// AcceptLeave accept or reject a leave
 	AcceptLeave(ctx context.Context, in *AcceptLeaveRequest, opts ...grpc.CallOption) (*AcceptLeaveResponse, error)
 }
 
@@ -80,13 +76,9 @@ func (c *msgClient) AcceptLeave(ctx context.Context, in *AcceptLeaveRequest, opt
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
 type MsgServer interface {
-	// RegisterAdmin adds a new admin
 	RegisterAdmin(context.Context, *RegisterAdminRequest) (*RegisterAdminResponse, error)
-	// AddStudent adds new student
 	AddStudent(context.Context, *AddStudentRequest) (*AddStudentResponse, error)
-	// ApplyLeave request a new leave
 	ApplyLeave(context.Context, *ApplyLeaveRequest) (*ApplyLeaveResponse, error)
-	// AcceptLeave accept or reject a leave
 	AcceptLeave(context.Context, *AcceptLeaveRequest) (*AcceptLeaveResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
