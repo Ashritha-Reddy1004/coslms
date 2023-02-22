@@ -2,7 +2,9 @@ package keeper
 
 import (
 	"context"
-	"coslms/x/lms/types"
+	//"x/lms/types"
+
+	"grpc/coslms/x/lms/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
