@@ -2,10 +2,8 @@ package keeper
 
 import (
 	"context"
-	//"x/lms/types"
 
-	"grpc/coslms/x/lms/types"
-
+	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -24,8 +22,8 @@ func (k msgServer) AddStudent(goCtx context.Context, req *types.AddStudentReques
 	return &types.AddStudentResponse{}, nil
 }
 func (k msgServer) Applyleave(c context.Context, a *types.AcceptLeaveRequest) (*types.AcceptLeaveResponse, error) {
-	stdnt := types.ApplyLeaveRequest{}
-	k.cdc.MustMarshal(&stdnt)
+	//stdnt := types.ApplyLeaveRequest{}
+	//k.cdc.MustMarshal(&stdnt)
 	return &types.AcceptLeaveResponse{}, nil
 
 }
