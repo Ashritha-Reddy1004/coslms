@@ -1,15 +1,12 @@
 syntax = "proto3";
 
-package lms.v1beta1;
-
 option go_package="x/lms/types";
+package cosmos.lms.v1beta1;
 
+import "google/protobuf/timestamp.proto";
+import "gogoproto/gogo.proto";
 
-
-//import "google/protobuf/timestamp.proto";
-//import "gogoproto/gogo.proto";
-
-//option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.goproto_getters_all) = false;
 
 message Student {
     string address = 1;
@@ -43,8 +40,8 @@ message ApplyLeaveRequest {
     string address = 1;   
     string reason = 2;  
     string leave_id=5;
-    //google.protobuf.Timestamp from = 3 [(gogoproto.stdtime) = true];  
-    //google.protobuf.Timestamp to = 4 [(gogoproto.stdtime) = true];
+    google.protobuf.Timestamp from = 3 [(gogoproto.stdtime) = true];  
+    google.protobuf.Timestamp to = 4 [(gogoproto.stdtime) = true];
 }
 
 message ApplyLeaveResponse {
