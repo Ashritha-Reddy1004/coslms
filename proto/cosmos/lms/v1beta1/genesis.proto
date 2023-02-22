@@ -1,5 +1,15 @@
-syntax = "proto3";
-
+syntax="proto3";
 package lms.v1beta1;
 
-option go_package = "x/lms/types";
+option go_package="x/lms/types";
+
+import "proto/cosmos/lms/v1beta1/tx.proto";
+//import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+
+message GenesisState{
+    repeated Student student=1;
+    repeated AcceptLeaveRequest admin=2;
+    repeated ApplyLeaveRequest applyleave=3;
+    repeated RegisterAdminRequest acceptleave=4;
+}

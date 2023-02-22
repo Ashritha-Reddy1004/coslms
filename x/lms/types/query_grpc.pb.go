@@ -23,8 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QueryClient interface {
 	GetStudents(ctx context.Context, in *GetStudentsRequest, opts ...grpc.CallOption) (*GetStudentsResponse, error)
-	GetLeaveRequests(ctx context.Context, in *GetLeaveRequestsRequest, opts ...grpc.CallOption) (*GetLeaveRequestsResponse, error)
-	GetLeaveApprovedRequests(ctx context.Context, in *GetLeaveApprovedRequestsRequest, opts ...grpc.CallOption) (*GetLeaveApprovedRequestsResponse, error)
+	GetStudent(ctx context.Context, in *GetStudentRequest, opts ...grpc.CallOption) (*GetStudentResponse, error)
+	GetLeaveRequests(ctx context.Context, in *GetLeaveRequestsRequest, opts ...grpc.CallOption) (*GetLeaveApprovesResponse, error)
+	GetLeaveApproves(ctx context.Context, in *GetLeaveApprovesRequest, opts ...grpc.CallOption) (*GetLeaveApprovesResponse, error)
 }
 
 type queryClient struct {
@@ -44,8 +45,17 @@ func (c *queryClient) GetStudents(ctx context.Context, in *GetStudentsRequest, o
 	return out, nil
 }
 
-func (c *queryClient) GetLeaveRequests(ctx context.Context, in *GetLeaveRequestsRequest, opts ...grpc.CallOption) (*GetLeaveRequestsResponse, error) {
-	out := new(GetLeaveRequestsResponse)
+func (c *queryClient) GetStudent(ctx context.Context, in *GetStudentRequest, opts ...grpc.CallOption) (*GetStudentResponse, error) {
+	out := new(GetStudentResponse)
+	err := c.cc.Invoke(ctx, "/lms.v1beta1.Query/GetStudent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) GetLeaveRequests(ctx context.Context, in *GetLeaveRequestsRequest, opts ...grpc.CallOption) (*GetLeaveApprovesResponse, error) {
+	out := new(GetLeaveApprovesResponse)
 	err := c.cc.Invoke(ctx, "/lms.v1beta1.Query/GetLeaveRequests", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -53,9 +63,9 @@ func (c *queryClient) GetLeaveRequests(ctx context.Context, in *GetLeaveRequests
 	return out, nil
 }
 
-func (c *queryClient) GetLeaveApprovedRequests(ctx context.Context, in *GetLeaveApprovedRequestsRequest, opts ...grpc.CallOption) (*GetLeaveApprovedRequestsResponse, error) {
-	out := new(GetLeaveApprovedRequestsResponse)
-	err := c.cc.Invoke(ctx, "/lms.v1beta1.Query/GetLeaveApprovedRequests", in, out, opts...)
+func (c *queryClient) GetLeaveApproves(ctx context.Context, in *GetLeaveApprovesRequest, opts ...grpc.CallOption) (*GetLeaveApprovesResponse, error) {
+	out := new(GetLeaveApprovesResponse)
+	err := c.cc.Invoke(ctx, "/lms.v1beta1.Query/GetLeaveApproves", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,8 +77,9 @@ func (c *queryClient) GetLeaveApprovedRequests(ctx context.Context, in *GetLeave
 // for forward compatibility
 type QueryServer interface {
 	GetStudents(context.Context, *GetStudentsRequest) (*GetStudentsResponse, error)
-	GetLeaveRequests(context.Context, *GetLeaveRequestsRequest) (*GetLeaveRequestsResponse, error)
-	GetLeaveApprovedRequests(context.Context, *GetLeaveApprovedRequestsRequest) (*GetLeaveApprovedRequestsResponse, error)
+	GetStudent(context.Context, *GetStudentRequest) (*GetStudentResponse, error)
+	GetLeaveRequests(context.Context, *GetLeaveRequestsRequest) (*GetLeaveApprovesResponse, error)
+	GetLeaveApproves(context.Context, *GetLeaveApprovesRequest) (*GetLeaveApprovesResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -79,11 +90,14 @@ type UnimplementedQueryServer struct {
 func (UnimplementedQueryServer) GetStudents(context.Context, *GetStudentsRequest) (*GetStudentsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStudents not implemented")
 }
-func (UnimplementedQueryServer) GetLeaveRequests(context.Context, *GetLeaveRequestsRequest) (*GetLeaveRequestsResponse, error) {
+func (UnimplementedQueryServer) GetStudent(context.Context, *GetStudentRequest) (*GetStudentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetStudent not implemented")
+}
+func (UnimplementedQueryServer) GetLeaveRequests(context.Context, *GetLeaveRequestsRequest) (*GetLeaveApprovesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLeaveRequests not implemented")
 }
-func (UnimplementedQueryServer) GetLeaveApprovedRequests(context.Context, *GetLeaveApprovedRequestsRequest) (*GetLeaveApprovedRequestsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLeaveApprovedRequests not implemented")
+func (UnimplementedQueryServer) GetLeaveApproves(context.Context, *GetLeaveApprovesRequest) (*GetLeaveApprovesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLeaveApproves not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -116,6 +130,24 @@ func _Query_GetStudents_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_GetStudent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStudentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetStudent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/lms.v1beta1.Query/GetStudent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetStudent(ctx, req.(*GetStudentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Query_GetLeaveRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetLeaveRequestsRequest)
 	if err := dec(in); err != nil {
@@ -134,20 +166,20 @@ func _Query_GetLeaveRequests_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_GetLeaveApprovedRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetLeaveApprovedRequestsRequest)
+func _Query_GetLeaveApproves_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLeaveApprovesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GetLeaveApprovedRequests(ctx, in)
+		return srv.(QueryServer).GetLeaveApproves(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/lms.v1beta1.Query/GetLeaveApprovedRequests",
+		FullMethod: "/lms.v1beta1.Query/GetLeaveApproves",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GetLeaveApprovedRequests(ctx, req.(*GetLeaveApprovedRequestsRequest))
+		return srv.(QueryServer).GetLeaveApproves(ctx, req.(*GetLeaveApprovesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -164,12 +196,16 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Query_GetStudents_Handler,
 		},
 		{
+			MethodName: "GetStudent",
+			Handler:    _Query_GetStudent_Handler,
+		},
+		{
 			MethodName: "GetLeaveRequests",
 			Handler:    _Query_GetLeaveRequests_Handler,
 		},
 		{
-			MethodName: "GetLeaveApprovedRequests",
-			Handler:    _Query_GetLeaveApprovedRequests_Handler,
+			MethodName: "GetLeaveApproves",
+			Handler:    _Query_GetLeaveApproves_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

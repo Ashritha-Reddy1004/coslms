@@ -1,37 +1,53 @@
 syntax = "proto3";
 
 package lms.v1beta1;
-
-option go_package = "x/lms/types";
+option go_package="x/lms/types";
 
 import "proto/cosmos/lms/v1beta1/tx.proto";
 
-service Query {
+// import "google/protobuf/timestamp.proto";
+
+// message Students {
+//     string address = 1;
+//     string name = 2;
+//     string id = 3;
+// }
+message GetStudentRequest{
+    string id=1;
+}
+
+message GetStudentResponse{
+    Student student=1;
+}
+
+message GetStudentsRequest{
+    
+}
+
+message GetStudentsResponse{
+    repeated Student  students=1;
+}
+
+message GetLeaveRequestsRequest{
+
+}
+
+message GetLeaveRequestsResponse{
+    repeated ApplyLeaveRequest leaverequest=1;
+
+}
+
+message GetLeaveApprovesRequest{
+
+}
+
+message GetLeaveApprovesResponse{
+    repeated AcceptLeaveRequest leaveapprove=1;
+}
+
+service Query{
     rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse){};
-    rpc GetLeaveRequests(GetLeaveRequestsRequest) returns (GetLeaveRequestsResponse){};
-    rpc GetLeaveApprovedRequests(GetLeaveApprovedRequestsRequest) returns (GetLeaveApprovedRequestsResponse){};
-}
-
-message GetStudentsRequest {
-
-}
-
-message GetStudentsResponse {
-    repeated Student students = 1;
-}
-
-message GetLeaveRequestsRequest {
-    
-}
-
-message GetLeaveRequestsResponse {
-    repeated ApplyLeaveRequest leaverequests = 1;
-}
-
-message GetLeaveApprovedRequestsRequest {
-    
-}
-
-message GetLeaveApprovedRequestsResponse {
-    repeated ApplyLeaveRequest leaverequests = 1;
+    rpc GetStudent(GetStudentRequest) returns (GetStudentResponse){};
+    rpc GetLeaveRequests(GetLeaveRequestsRequest) returns (GetLeaveApprovesResponse){};
+    rpc GetLeaveApproves(GetLeaveApprovesRequest) returns (GetLeaveApprovesResponse){};
 }
