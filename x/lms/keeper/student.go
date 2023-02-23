@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k keeper) AddStudent(ctx sdk.Context, addstudent *types.AddStudentRequest) error {
+func (k keeper) AddStudents(ctx sdk.Context, addstudent *types.AddStudentRequest) error {
 
 	if addstudent.Name == "" {
 		return errors.New("name cant be null")
@@ -30,7 +30,7 @@ func (k keeper) AddStudent(ctx sdk.Context, addstudent *types.AddStudentRequest)
 	return nil
 }
 
-func (k keeper) RegisterAdmin(ctx sdk.Context, registeradminreq *types.RegisterAdminRequest) error {
+func (k keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.RegisterAdminRequest) error {
 
 	store := ctx.KVStore(k.storekey)
 	// key := types.StudentKey
@@ -52,10 +52,10 @@ func (k keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 		return errors.New("Address cant be null")
 	} else if applyleavereq.Reason == "" {
 		return errors.New("Reason cant be null")
-	} else if applyleavereq.from == nil {
-		return errors.New("From date cant be null")
-	} else if applyleavereq.to == nil {
-		return errors.New("To date cant be null")
+		//} else if applyleavereq.google.protobuf.Timestamp.From == nil {
+		//return errors.New("From date cant be null")
+		//} else if applyleavereq.to == nil {
+		//return errors.New("To date cant be null")
 	} else {
 		store := ctx.KVStore(k.storekey)
 		// key := types.StudentKey
@@ -71,7 +71,7 @@ func (k keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 	return nil
 }
 
-func (k keeper) AcceptLeave(ctx sdk.Context, acceptleavereq *types.AcceptLeaveRequest) error {
+func (k keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveRequest) error {
 	if acceptleavereq.Admin == "" {
 		return errors.New("Admin cant be null")
 	} else if acceptleavereq.LeaveId == "" {

@@ -11,7 +11,10 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/gov/keeper"
+
+	//"github.com/cosmos/cosmos-sdk/x/gov/keeper"
+	"github.com/Ashritha-Reddy1004/coslms/x/lms/keeper"
+
 	"github.com/stretchr/testify/suite"
 	dbm "github.com/tendermint/tm-db"
 )

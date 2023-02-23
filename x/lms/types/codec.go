@@ -23,7 +23,7 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 		&AcceptLeaveRequest{},
 	)
 	//MsgServer.RegisterMsgServiceDesc(registry, &Msg_ServiceDesc)
-	msgservice.RegisterMsgServiceDesc(registry, &Msg_ServiceDesc)
+	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
 
 var (

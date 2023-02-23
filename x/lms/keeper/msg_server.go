@@ -16,7 +16,7 @@ type msgServer struct {
 
 func (k msgServer) AddStudent(goCtx context.Context, req *types.AddStudentRequest) (*types.AddStudentResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	k.AddStudent(ctx, req)
+	k.AddStudents(ctx, req)
 	return &types.AddStudentResponse{}, nil
 }
 func (k msgServer) ApplyLeave(goCtx context.Context, req *types.ApplyLeaveRequest) (*types.ApplyLeaveResponse, error) {
@@ -27,11 +27,11 @@ func (k msgServer) ApplyLeave(goCtx context.Context, req *types.ApplyLeaveReques
 }
 func (k msgServer) AcceptLeave(goCtx context.Context, req *types.AcceptLeaveRequest) (*types.AcceptLeaveResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	k.AcceptLeave(ctx, req)
+	k.AcceptLeaves(ctx, req)
 	return &types.AcceptLeaveResponse{}, nil
 }
 func (k msgServer) RegisterAdmin(goCtx context.Context, req *types.RegisterAdminRequest) (*types.RegisterAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	k.RegisterAdmin(ctx, req)
+	k.RegisterAdmins(ctx, req)
 	return &types.RegisterAdminResponse{}, nil
 }

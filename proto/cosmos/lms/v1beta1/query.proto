@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package cosmos.lms.v1beta1;
 
-option go_package = "x/lms/types";
+ option go_package = "x/lms/types";
 
-import "cosmos/lms/v1beta1/tx.proto";
+ import "cosmos/lms/v1beta1/tx.proto";
 
 service Query {
     rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse){};
@@ -33,6 +33,6 @@ message GetLeaveApprovedRequestsRequest {
 }
 
 message GetLeaveApprovedRequestsResponse {
-    repeated ApplyLeaveRequest leaverequests = 1;
-}
+     repeated ApplyLeaveRequest leaverequests = 1;
+ }
 
