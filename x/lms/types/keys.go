@@ -1,19 +1,17 @@
 package types
 
 const (
-	ModuleName = "lms"
+	ModuleName = "coslms"
 
 	StoreKey = ModuleName
-
-	// RouterKey = ModuleName
-	// QuerierRoute = ModuleName
 )
 
 var (
-	AdminKey    = []byte{0x01}
-	StudentKey  = []byte{0x02}
-	LeavesKey   = []byte{0x03}
-	sequenceKey = []byte{0x04}
+	AdminKey        = []byte{0x01}
+	StudentKey      = []byte{0x02}
+	ApplyLeavesKey  = []byte{0x03}
+	AcceptLeavesKey = []byte{0x04}
+	sequenceKey     = []byte{0x05}
 )
 
 func AdminStoreKey(address string) []byte {
@@ -30,10 +28,18 @@ func StudentStoreKey(studentID string) []byte {
 	return key
 }
 
-func LeavesStoreKey(admin string, leaveID string) []byte {
-	key := make([]byte, len(LeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
-	copy(key, LeavesKey)
-	copy(key[len(LeavesKey):], admin)
+func AcceptLeavesStoreKey(admin string, leaveID string) []byte {
+	key := make([]byte, len(AcceptLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
+	copy(key, AcceptLeavesKey)
+	copy(key[len(AcceptLeavesKey):], admin)
+	copy(key, sequenceKey)
+	copy(key[len(sequenceKey):], leaveID)
+	return key
+}
+func ApplyLeavesStoreKey(admin string, leaveID string) []byte {
+	key := make([]byte, len(ApplyLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
+	copy(key, ApplyLeavesKey)
+	copy(key[len(ApplyLeavesKey):], admin)
 	copy(key, sequenceKey)
 	copy(key[len(sequenceKey):], leaveID)
 	return key

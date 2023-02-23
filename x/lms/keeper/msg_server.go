@@ -14,24 +14,24 @@ type msgServer struct {
 	types.UnimplementedMsgServer
 }
 
-func (k msgServer) AddStudent(goCtx context.Context, req *types.AddStudentRequest) (*types.AddStudentResponse, error) {
+func (k msgServer) AddStudent(goCtx context.Context, addstudentreq *types.AddStudentRequest) (*types.AddStudentResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	k.AddStudents(ctx, req)
+	k.AddStudents(ctx, addstudentreq)
 	return &types.AddStudentResponse{}, nil
 }
-func (k msgServer) ApplyLeave(goCtx context.Context, req *types.ApplyLeaveRequest) (*types.ApplyLeaveResponse, error) {
+func (k msgServer) ApplyLeave(goCtx context.Context, applyleavereq *types.ApplyLeaveRequest) (*types.ApplyLeaveResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	k.ApplyLeaves(ctx, req)
+	k.ApplyLeaves(ctx, applyleavereq)
 	return &types.ApplyLeaveResponse{}, nil
 
 }
-func (k msgServer) AcceptLeave(goCtx context.Context, req *types.AcceptLeaveRequest) (*types.AcceptLeaveResponse, error) {
+func (k msgServer) AcceptLeave(goCtx context.Context, acceptleavereq *types.AcceptLeaveRequest) (*types.AcceptLeaveResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	k.AcceptLeaves(ctx, req)
+	k.AcceptLeaves(ctx, acceptleavereq)
 	return &types.AcceptLeaveResponse{}, nil
 }
-func (k msgServer) RegisterAdmin(goCtx context.Context, req *types.RegisterAdminRequest) (*types.RegisterAdminResponse, error) {
+func (k msgServer) RegisterAdmin(goCtx context.Context, registeradminreq *types.RegisterAdminRequest) (*types.RegisterAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	k.RegisterAdmins(ctx, req)
+	k.RegisterAdmins(ctx, registeradminreq)
 	return &types.RegisterAdminResponse{}, nil
 }

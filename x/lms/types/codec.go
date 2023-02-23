@@ -9,10 +9,10 @@ import (
 )
 
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&AddStudentRequest{}, "", nil)
-	cdc.RegisterConcrete(&RegisterAdminRequest{}, "abcd", nil)
-	cdc.RegisterConcrete(&ApplyLeaveRequest{}, "aaa", nil)
-	cdc.RegisterConcrete(&AcceptLeaveRequest{}, "aaaa", nil)
+	cdc.RegisterConcrete(&AddStudentRequest{}, "coslms/AddStudent", nil)
+	cdc.RegisterConcrete(&RegisterAdminRequest{}, "coslms/RegisterAdmin", nil)
+	cdc.RegisterConcrete(&ApplyLeaveRequest{}, "coslms/ApplyLeave", nil)
+	cdc.RegisterConcrete(&AcceptLeaveRequest{}, "AcceptLeave", nil)
 }
 
 func RegisterInterfaces(registry types.InterfaceRegistry) {

@@ -13,7 +13,7 @@ service Query {
 }
 
 message GetStudentsRequest {
-
+ 
 }
 
 message GetStudentsResponse {
