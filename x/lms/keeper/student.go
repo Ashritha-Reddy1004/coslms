@@ -2,33 +2,38 @@ package keeper
 
 import (
 	"errors"
+	"log"
+
+	//"x/lms/types"
 
 	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequest) error {
+func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequest) error {
 
-	if addstudentreq.Name == "" {
-		return errors.New("Name field cannot be null")
-	} else if addstudentreq.Address == "" {
-		return errors.New("Address field cannot be null")
-	} else if addstudentreq.Id == "" {
-		return errors.New("Id field cannot be null")
-	} else {
-		store := ctx.KVStore(k.storekey)
-		k.cdc.MustMarshal(addstudentreq)
-
-		marshalAddStudent, err := k.cdc.Marshal(addstudentreq)
+	// if addstudentreq.Admin == "" {
+	// 	return errors.New("Admin field cannot be null")
+	// } else if addstudentreq.Name == "" {
+	// 	return errors.New("Address field cannot be null")
+	// } else if addstudentreq.Id == "" {
+	// 	return errors.New("Id field cannot be null")
+	// } else {}
+	students := addstudentreq.Student
+	store := ctx.KVStore(k.storekey)
+	for _, stud := range students {
+		marshalAddStudents, err := k.cdc.Marshal(stud)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
-		store.Set(types.StudentStoreKey(addstudentreq.Id), marshalAddStudent)
+		store.Set(types.StudentStoreKey(stud.Address), marshalAddStudents)
+		//k.GetStudent(ctx, sdk.AccAddress("lms1").String())
 	}
 	return nil
+
 }
 
-func (k keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.RegisterAdminRequest) error {
+func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.RegisterAdminRequest) error {
 	if registeradminreq.Address == "" {
 		return errors.New("Address field cannot be null")
 	} else if registeradminreq.Name == "" {
@@ -37,7 +42,7 @@ func (k keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 
 		store := ctx.KVStore(k.storekey)
 		//key := types.StudentKey
-		k.cdc.MustMarshal(registeradminreq)
+		//k.cdc.MustMarshal(registeradminreq)
 
 		marshalAdmin, err := k.cdc.Marshal(registeradminreq)
 
@@ -49,7 +54,7 @@ func (k keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 	}
 }
 
-func (k keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequest) error {
+func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequest) error {
 
 	if applyleavereq.Address == "" {
 		return errors.New("Address field cannot be null")
@@ -76,7 +81,7 @@ func (k keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 	return nil
 }
 
-func (k keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveRequest) error {
+func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveRequest) error {
 	if acceptleavereq.Admin == "" {
 		return errors.New("Admin field cannot be null")
 	} else if acceptleavereq.LeaveId == "" {

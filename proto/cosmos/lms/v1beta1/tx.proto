@@ -28,9 +28,8 @@ message RegisterAdminResponse{
 
 message AddStudentRequest {
     string admin = 1;
-    string address = 2;
-    string name = 3;
-    string id = 4;
+   
+    repeated Student student =2;
 }
 
 message AddStudentResponse{}

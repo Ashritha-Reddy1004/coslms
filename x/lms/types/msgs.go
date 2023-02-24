@@ -15,9 +15,7 @@ var (
 func NewAddStudentRequest(admin string, name string, address string, id string) *AddStudentRequest {
 	return &AddStudentRequest{
 		Admin:   admin,
-		Address: address,
-		Name:    name,
-		Id:      id,
+		Student: []*Student{},
 	}
 }
 

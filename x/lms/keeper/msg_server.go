@@ -10,7 +10,7 @@ import (
 var _ types.MsgServer = msgServer{}
 
 type msgServer struct {
-	keeper
+	Keeper
 	types.UnimplementedMsgServer
 }
 

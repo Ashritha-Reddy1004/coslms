@@ -26,7 +26,7 @@ import (
 type TestSuite struct {
 	suite.Suite
 	ctx           sdk.Context
-	studentKeeper keeper.keeper
+	studentKeeper keeper.Keeper
 	*assert.Assertions
 	mutex   sync.RWMutex
 	require *require.Assertions
@@ -187,8 +187,8 @@ func (s *TestSuite) TestAddStudents() {
 		},
 	}
 	req := types.AddStudentRequest{
-		Admin: "Ashritha",
-		Id:    "24",
+		Admin:   "Ashritha",
+		Student: students,
 	}
 	res := s.studentKeeper.AddStudents(s.ctx, &req)
 	fmt.Println(res)

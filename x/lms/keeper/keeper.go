@@ -5,7 +5,7 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 )
 
-type keeper struct {
+type Keeper struct {
 	storekey storetypes.StoreKey
 	cdc      codec.BinaryCodec
 }
@@ -13,8 +13,8 @@ type keeper struct {
 func NewKeeper(
 	storekey storetypes.StoreKey,
 	cdc codec.BinaryCodec,
-) keeper {
-	return keeper{
+) Keeper {
+	return Keeper{
 		cdc:      cdc,
 		storekey: storekey,
 	}

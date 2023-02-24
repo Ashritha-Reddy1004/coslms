@@ -7,7 +7,7 @@ import (
 )
 
 type queryServer struct {
-	keeper
+	Keeper
 	types.UnimplementedQueryServer
 }
 
