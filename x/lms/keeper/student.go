@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"errors"
 	"log"
 
 	//"x/lms/types"
@@ -33,11 +32,11 @@ func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequ
 
 }
 
-func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.RegisterAdminRequest) error {
+func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.RegisterAdminRequest) string {
 	if registeradminreq.Address == "" {
-		return errors.New("Address field cannot be null")
+		return ("Address field cannot be null")
 	} else if registeradminreq.Name == "" {
-		return errors.New("Name field cannot be null")
+		return ("Name field cannot be null")
 	} else {
 
 		store := ctx.KVStore(k.storekey)
@@ -47,25 +46,25 @@ func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 		marshalAdmin, err := k.cdc.Marshal(registeradminreq)
 
 		if err != nil {
-			return err
+			return "invalid"
 		}
 		store.Set(types.AdminStoreKey(registeradminreq.Address), marshalAdmin)
-		return nil
+		return "Admin Registered Successfully"
 	}
 }
 
-func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequest) error {
+func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequest) string {
 
 	if applyleavereq.Address == "" {
-		return errors.New("Address field cannot be null")
+		return ("Address field cannot be null")
 	} else if applyleavereq.Reason == "" {
-		return errors.New("Reason field cannot be null")
+		return ("Reason field cannot be null")
 	} else if applyleavereq.LeaveId == "" {
-		return errors.New("Id cannot be empty")
+		return ("Id cannot be empty")
 	} else if applyleavereq.From == nil {
-		return errors.New("From field cannot be null")
+		return ("From field cannot be null")
 	} else if applyleavereq.To == nil {
-		return errors.New("To cannot be null")
+		return ("To field cannot be null")
 	} else {
 		store := ctx.KVStore(k.storekey)
 		//key := types.StudentKey
@@ -78,16 +77,16 @@ func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 		}
 		store.Set(types.ApplyLeavesStoreKey(applyleavereq.LeaveId, applyleavereq.Address), marshalApplyLeave)
 	}
-	return nil
+	return "Leave Applied Successfully"
 }
 
-func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveRequest) error {
+func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveRequest) string {
 	if acceptleavereq.Admin == "" {
-		return errors.New("Admin field cannot be null")
+		return ("Admin field cannot be null")
 	} else if acceptleavereq.LeaveId == "" {
-		return errors.New("LeaveId field cannot be null")
+		return ("LeaveId field cannot be null")
 	} else if acceptleavereq.Status == 0 {
-		return errors.New("Status field cannot be null")
+		return ("Status field cannot be null")
 	} else {
 		store := ctx.KVStore(k.storekey)
 		//key := types.StudentKey
@@ -99,5 +98,5 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 		}
 		store.Set(types.AcceptLeavesStoreKey(acceptleavereq.Admin, acceptleavereq.LeaveId), marshalAcceptLeave)
 	}
-	return nil
+	return "Leave Accepted"
 }
