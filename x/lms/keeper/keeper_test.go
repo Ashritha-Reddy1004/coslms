@@ -111,7 +111,7 @@ func (s *TestSuite) TestRegisterAdmin() {
 	}
 	require := s.Require()
 	for _, test := range RegisterAdminTests {
-		if output := s.studentKeeper.RegisterAdmins(s.ctx, &test.arg1); (output) != test.expected {
+		if output := s.studentKeeper.RegisterAdmins(s.ctx, &test.arg1); fmt.Sprint(output) != test.expected {
 			require.Equal(test.expected, output)
 		}
 	}
@@ -148,13 +148,13 @@ func (s *TestSuite) TestApplyLeave() {
 	}
 	require := s.Require()
 	for _, test := range applyLeaveTests {
-		if output := s.studentKeeper.ApplyLeaves(s.ctx, &test.arg1); output != test.expected {
+		if output := s.studentKeeper.ApplyLeaves(s.ctx, &test.arg1); fmt.Sprint(output) != test.expected {
 			require.Equal(test.expected, output)
 		}
 	}
 
 }
-func (s *TestSuite) TestAcceptLeave() {
+func (s *TestSuite) TestAcceptLeaves() {
 	req := types.AcceptLeaveRequest{
 		Admin:   sdk.AccAddress("abcdef").String(),
 		LeaveId: "1",
@@ -168,7 +168,7 @@ func TestTestSuite(t *testing.T) {
 	suite.Run(t, new(TestSuite))
 }
 
-func (s *TestSuite) TestAddStudent() {
+func (s *TestSuite) TestAddStudents() {
 	students := []*types.Student{
 		{
 			Address: sdk.AccAddress("1234").String(),
