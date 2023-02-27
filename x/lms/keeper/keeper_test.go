@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
+	"golang.org/x/tools/go/expect"
 	//"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -173,16 +174,48 @@ func (s *TestSuite) TestApplyLeave() {
 }
 
 func (s *TestSuite) TestAcceptLeaves() {
-	type TestAcceptLeaves
-	req := types.AcceptLeaveRequest{
+	type AcceptLeavesTest struct{
+		req types.AcceptLeaveRequest
+		expected string
+	}
+	var AcceptLeavesTest = []AcceptLeavestest{
+		req :types.AcceptLeaveRequest{
+	
 		Admin:   sdk.AccAddress("abcdef").String(),
 		LeaveId: "1",
 		Status:  1,
 	},
 	expected :"Leave Accepted",
 },
-	res := s.studentKeeper.AcceptLeaves(s.ctx, &req)
-	fmt.Println(res)
+{
+	req : types.AcceptLeaveRequest{
+		Admin : sdk.AccAddress("123658").String(),
+		LeaveId :"2",
+		Status : 0,
+	},
+	expected :"Status field cannot be null",
+},
+{
+	req : types.AcceptLeaveRequest{
+		Admin : "",
+		LeaveId : "3",
+		Status : 1,
+	},
+	expected : "Admin field cannot be null"
+},
+{
+	req : types.AcceptLeaveRequest{
+		Admin : sdk.AccAddress("aq1bgd546").String(),
+		LeaveId : "",
+		Status : 2,
+	},
+	expected : "LeaveId field cannot be null"
+},
+}
+for _,test := range AcceptLeavesTest{
+	if output := s.studentKeeper.AcceptLeaves(s.ctx,&test.req); output != test.expected{
+		fmt.Println("FAILED")
+	}
 }
 
 func TestTestSuite(t *testing.T) {

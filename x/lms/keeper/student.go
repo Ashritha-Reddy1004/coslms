@@ -12,7 +12,8 @@ import (
 func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequest) error {
 
 	// if addstudentreq.Admin == "" {
-	// 	return errors.New("Admin field cannot be null")
+	// 	return errors.New("Admin
+	// field cannot be null")
 	// } else if addstudentreq.Name == "" {
 	// 	return errors.New("Address field cannot be null")
 	// } else if addstudentreq.Id == "" {
