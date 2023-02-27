@@ -17,10 +17,6 @@ func (k queryServer) GetStudents(context.Context, *types.GetStudentsRequest) (*t
 	return &types.GetStudentsResponse{}, nil
 }
 
-// func (k queryServer) GetStudent(context.Context, *types.GetStudentRequest) (*types.GetStudentResponse, error) {
-// 	return &types.GetStudentResponse{}, nil
-// }
-
 func (k queryServer) GetLeaveRequests(context.Context, *types.GetLeaveRequestsRequest) (*types.GetLeaveRequestsResponse, error) {
 	return &types.GetLeaveRequestsResponse{}, nil
 }

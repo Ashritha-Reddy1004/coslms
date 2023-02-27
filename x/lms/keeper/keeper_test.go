@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
-	"golang.org/x/tools/go/expect"
 	//"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -174,48 +173,52 @@ func (s *TestSuite) TestApplyLeave() {
 }
 
 func (s *TestSuite) TestAcceptLeaves() {
-	type AcceptLeavesTest struct{
-		req types.AcceptLeaveRequest
+	type AcceptLeavesTest struct {
+		req      types.AcceptLeaveRequest
 		expected string
 	}
-	var AcceptLeavesTest = []AcceptLeavestest{
-		req :types.AcceptLeaveRequest{
-	
-		Admin:   sdk.AccAddress("abcdef").String(),
-		LeaveId: "1",
-		Status:  1,
-	},
-	expected :"Leave Accepted",
-},
-{
-	req : types.AcceptLeaveRequest{
-		Admin : sdk.AccAddress("123658").String(),
-		LeaveId :"2",
-		Status : 0,
-	},
-	expected :"Status field cannot be null",
-},
-{
-	req : types.AcceptLeaveRequest{
-		Admin : "",
-		LeaveId : "3",
-		Status : 1,
-	},
-	expected : "Admin field cannot be null"
-},
-{
-	req : types.AcceptLeaveRequest{
-		Admin : sdk.AccAddress("aq1bgd546").String(),
-		LeaveId : "",
-		Status : 2,
-	},
-	expected : "LeaveId field cannot be null"
-},
-}
-for _,test := range AcceptLeavesTest{
-	if output := s.studentKeeper.AcceptLeaves(s.ctx,&test.req); output != test.expected{
-		fmt.Println("FAILED")
+	var acceptLeavesTest = []AcceptLeavesTest{
+		{
+			req: types.AcceptLeaveRequest{
+
+				Admin:   sdk.AccAddress("abcdef").String(),
+				LeaveId: "1",
+				Status:  1,
+			},
+			expected: "Leave Accepted",
+		},
+		{
+			req: types.AcceptLeaveRequest{
+				Admin:   sdk.AccAddress("123658").String(),
+				LeaveId: "2",
+				Status:  0,
+			},
+			expected: "Status field cannot be null",
+		},
+		{
+			req: types.AcceptLeaveRequest{
+				Admin:   "",
+				LeaveId: "3",
+				Status:  1,
+			},
+			expected: "Admin field cannot be null",
+		},
+		{
+			req: types.AcceptLeaveRequest{
+				Admin:   sdk.AccAddress("aq1bgd546").String(),
+				LeaveId: "",
+				Status:  2,
+			},
+			expected: "LeaveId field cannot be null",
+		},
 	}
+
+	for _, test := range acceptLeavesTest {
+		if output := s.studentKeeper.AcceptLeaves(s.ctx, &test.req); output != test.expected {
+			fmt.Println("FAILED")
+		}
+	}
+
 }
 
 func TestTestSuite(t *testing.T) {
@@ -223,27 +226,21 @@ func TestTestSuite(t *testing.T) {
 }
 
 func (s *TestSuite) TestAddStudents() {
-	students := []*types.Student{
+	type AddStudentsTest struct {
+		req      types.AddStudentRequest
+		expected string
+	}
+	var students = []AddStudentsTest{
 		{
-			Address: sdk.AccAddress("1234").String(),
-			Name:    "Ashritha",
-			Id:      "1",
-		},
-		{
-			Address: sdk.AccAddress("5678").String(),
-			Name:    "Ankith",
-			Id:      "2",
-		},
-		{
-			Address: sdk.AccAddress("hgtf").String(),
-			Name:    "Sita",
-			Id:      "3",
+			req: types.AddStudentRequest{
+				Admin: "",
+			},
+			expected: "Admin field cannot be null",
 		},
 	}
-	req := types.AddStudentRequest{
-		Admin:   "Ashritha",
-		Student: students,
+	for _, test1 := range students {
+		if output := s.studentKeeper.AddStudents(s.ctx, &test1.req); output != test1.expected {
+			fmt.Println("FAILED")
+		}
 	}
-	res := s.studentKeeper.AddStudents(s.ctx, &req)
-	fmt.Println(res)
 }

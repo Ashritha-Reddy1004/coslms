@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,28 +16,134 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
+	"time"
 
+	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
 )
 
 // txCmd represents the tx command
-var txCmd = &cobra.Command{
-	Use:   "tx",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+func GetTxCmd() *cobra.Command {
+	studentTxCmd := &cobra.Command{
+		Use:   types.ModuleName,
+		Short: "|lms|",
+		Long:  `lms module commands`,
+		RunE:  client.ValidateCmd,
+	}
+	studentTxCmd.AddCommand(
+		RegisterAdminCmd(),
+		AddStudentCmd(),
+		AcceptLeaveCmd(),
+		ApplyLeaveCmd(),
+	)
+	return studentTxCmd
+	// 	Use:   "tx",
+	// 	Short: "A brief description of your command",
+	// 	Long: `A longer description that spans multiple lines and likely contains examples
+	// and usage of using your command. For example:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("tx called")
-	},
+	// Cobra is a CLI library for Go that empowers applications.
+	// This application is a tool to generate the needed files
+	// to quickly create a Cobra application.`,
+	// 	Run: func(cmd *cobra.Command, args []string) {
+	// 		fmt.Println("tx called")
+
+}
+func AddStudentCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "Adding User",
+		Short: "",
+		Long:  "",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				panic(err)
+			}
+			admin := args[0]
+			// address := args[1]
+			// name := args[2]
+			// id := args[3]
+			student := args[1]
+			// student.id:= args[2]
+			// student.address:=args[3]
+			msgClient := types.AddStudentRequest(admin, student)
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
+
+		},
+	}
+	return cmd
 }
 
+func RegisterAdminCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "Admin Registration",
+		Short: "",
+		Long:  "",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				panic(err)
+			}
+			address := args[0]
+			name := args[1]
+			msgClient := types.NewRegisterAdminRequest(address, name)
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
+
+		},
+	}
+	return cmd
+}
+
+func ApplyLeaveCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "Leave Application",
+		Short: "",
+		Long:  "",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				panic(err)
+			}
+			var format string = "2006-Jan-06"
+			fromDate, _ := time.Parse(format, args[3])
+			toDate, _ := time.Parse(format, args[4])
+			address := args[0]
+			reason := args[1]
+			leaveid := args[2]
+			from := &fromDate
+			to := &toDate
+			msgClient := types.NewApplyLeaveRequest(address, reason, leaveid, from, to)
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
+		},
+	}
+	return cmd
+}
+func AcceptLeaveCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "Apply Leave",
+		Short: "",
+		Long:  "",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				panic(err)
+			}
+			admin := args[0]
+			leaveid := args[1]
+			status := args[2]
+			msgClient := types.NewAcceptLeaveRequest(admin, leaveid, status)
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
+		},
+	}
+	return cmd
+}
 func init() {
-	rootCmd.AddCommand(txCmd)
+	rootCmd.AddCommand(AddStudentCmd())
+	rootCmd.AddCommand(RegisterAdminCmd())
+	rootCmd.AddCommand(ApplyLeaveCmd())
+	rootCmd.AddCommand(AcceptLeaveCmd())
 
 	// Here you will define your flags and configuration settings.
 

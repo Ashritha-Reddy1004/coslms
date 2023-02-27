@@ -9,29 +9,28 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequest) error {
+// Function to ADD STUDENT
+func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequest) string {
 
-	// if addstudentreq.Admin == "" {
-	// 	return errors.New("Admin
-	// field cannot be null")
-	// } else if addstudentreq.Name == "" {
-	// 	return errors.New("Address field cannot be null")
-	// } else if addstudentreq.Id == "" {
-	// 	return errors.New("Id field cannot be null")
-	// } else {}
-	students := addstudentreq.Student
-	store := ctx.KVStore(k.storekey)
-	for _, stud := range students {
-		marshalAddStudents, err := k.cdc.Marshal(stud)
-		if err != nil {
-			log.Fatal(err)
+	if addstudentreq.Admin == "" {
+		return ("Admin field cannot be null")
+	} else {
+		students := addstudentreq.Student
+		store := ctx.KVStore(k.storekey)
+		for _, stud := range students {
+			marshalAddStudents, err := k.cdc.Marshal(stud)
+			if err != nil {
+				log.Fatal(err)
+			}
+			store.Set(types.StudentStoreKey(stud.Address), marshalAddStudents)
+			//k.GetStudent(ctx, sdk.AccAddress("lms1").String())
 		}
-		store.Set(types.StudentStoreKey(stud.Address), marshalAddStudents)
-		//k.GetStudent(ctx, sdk.AccAddress("lms1").String())
-	}
-	return nil
+		return ""
 
+	}
 }
+
+//Function to REGISTER ADMIN
 
 func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.RegisterAdminRequest) string {
 	if registeradminreq.Address == "" {
@@ -42,7 +41,7 @@ func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 
 		store := ctx.KVStore(k.storekey)
 		//key := types.StudentKey
-		//k.cdc.MustMarshal(registeradminreq)
+		k.cdc.MustMarshal(registeradminreq)
 
 		marshalAdmin, err := k.cdc.Marshal(registeradminreq)
 
@@ -54,6 +53,7 @@ func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 	}
 }
 
+// Function to APPLY LEAVES
 func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequest) string {
 
 	if applyleavereq.Address == "" {
@@ -81,6 +81,7 @@ func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 	return "Leave Applied Successfully"
 }
 
+// Function to ACCEPT LEAVES
 func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveRequest) string {
 	if acceptleavereq.Admin == "" {
 		return ("Admin field cannot be null")
@@ -101,3 +102,21 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 	}
 	return "Leave Accepted"
 }
+
+// Function to GET STUDENT
+func (k Keeper) GetStudents(ctx sdk.Context, Address string) []byte {
+	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
+		panic(err)
+	}
+	store := ctx.KVStore(k.storekey)
+	return store.Get(types.StudentStoreKey(Address))
+}
+
+// // Function to GET ADMIN
+// func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
+// 	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
+// 		panic(err)
+// 	}
+// 	store := ctx.KVStore(k.storekey)
+// 	return store.Get(types.AdminStoreKey(Address))
+// }
