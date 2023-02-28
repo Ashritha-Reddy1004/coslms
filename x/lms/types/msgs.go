@@ -14,10 +14,10 @@ var (
 	_ sdk.Msg = &RegisterAdminRequest{}
 )
 
-func NewAddStudentRequest(admin string, student Student) *AddStudentRequest {
+func NewAddStudentRequest(admin string, students []*Student) *AddStudentRequest {
 	return &AddStudentRequest{
 		Admin:   admin,
-		Student: []*Student{},
+		Student: students,
 	}
 }
 

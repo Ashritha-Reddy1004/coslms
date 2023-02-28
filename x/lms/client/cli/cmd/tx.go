@@ -62,13 +62,20 @@ func AddStudentCmd() *cobra.Command {
 				panic(err)
 			}
 			admin := args[0]
-			// address := args[1]
-			// name := args[2]
-			// id := args[3]
-			student := args[1]
-			// student.id:= args[2]
-			// student.address:=args[3]
-			msgClient := types.AddStudentRequest(admin, student)
+			students := []*types.Student{}
+
+			for i := 0; i < (len(args)-1)/3; i++ {
+
+				student := &types.Student{
+					Address: args[3*i+1],
+					Name:    args[3*i+2],
+					Id:      args[3*i+3],
+				}
+				students = append(students, student)
+
+			}
+
+			msgClient := types.NewAddStudentRequest(admin, students)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 
 		},
@@ -133,7 +140,10 @@ func AcceptLeaveCmd() *cobra.Command {
 			admin := args[0]
 			leaveid := args[1]
 			status := args[2]
-			msgClient := types.NewAcceptLeaveRequest(admin, leaveid, status)
+			msgClient := types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_REJECTED)
+			if status == "0" {
+				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_ACCEPTED)
+			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 		},
 	}
