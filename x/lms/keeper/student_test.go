@@ -244,3 +244,19 @@ func (s *TestSuite) TestAddStudents() {
 		}
 	}
 }
+
+func (s *TestSuite) TestGetStudent() {
+	s.TestAddStudents()
+	s.studentKeeper.GetStudent(s.ctx)
+}
+
+func (s *TestSuite) TestGetLeavesRequest() {
+	s.TestApplyLeave()
+	s.studentKeeper.GetLeaveRequests(s.ctx, types.GetLeaveRequestsRequest{})
+}
+
+func (s *TestSuite) TestGetApprovedLeaves() {
+	s.TestAcceptLeaves()
+	s.studentKeeper.GetApprovedLeaves(s.ctx, types.GetLeaveApprovedRequestsRequest{})
+
+}

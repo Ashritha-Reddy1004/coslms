@@ -11,9 +11,17 @@ type queryServer struct {
 	types.UnimplementedQueryServer
 }
 
+func NewQueryServerImpl(k Keeper) types.QueryServer {
+	return &queryServer{
+		Keeper: k,
+	}
+}
+
 //var _ types.QueryServer = queryServer{}
 
-func (k queryServer) GetStudents(context.Context, *types.GetStudentsRequest) (*types.GetStudentsResponse, error) {
+func (k queryServer) GetStudents(goCtx context.Context, req *types.GetStudentsRequest) (*types.GetStudentsResponse, error) {
+	//ctx := sdk.UnwrapSDKContext(goCtx)
+	// k.GetStudent(ctx, req)
 	return &types.GetStudentsResponse{}, nil
 }
 
