@@ -85,7 +85,6 @@ func (s *TestSuite) TestRegisterAdmin() {
 			expected: "Name field cannot be null",
 		},
 	}
-	// require := s.Require()
 	for _, test := range RegisterAdminTests {
 		if output := s.studentKeeper.RegisterAdmins(s.ctx, &test.data); output != test.expected {
 			fmt.Println(test.expected, output)

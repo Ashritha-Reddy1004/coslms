@@ -49,7 +49,7 @@ func GetLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "getleaves",
 		Short: "List all applied leaves",
-		Long:  `List all the leaves which are applied by the students`,
+		Long:  ``,
 		RunE: func(ctx *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(ctx)
 			if err != nil {
@@ -70,7 +70,7 @@ func GetStudentsCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "getstudents",
 		Short: "List all the students",
-		Long:  `List all the students which are added by admin`,
+		Long:  `List all the students which are added by`,
 		RunE: func(ctx *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(ctx)
 			if err != nil {
@@ -110,7 +110,7 @@ func init() {
 	rootCmd.AddCommand(GetStudentsCmd())
 	rootCmd.AddCommand(GetLeavesCmd())
 	rootCmd.AddCommand(GetApprovedLeavesCmd())
-	// rootCmd.SuggestionsMinimumDistance = 3
+	rootCmd.SuggestionsMinimumDistance = 3
 
 	// Here you will define your flags and configuration settings.
 

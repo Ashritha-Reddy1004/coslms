@@ -14,6 +14,7 @@ var (
 	_ sdk.Msg = &RegisterAdminRequest{}
 )
 
+// -----------------------------------ADD STUDENT----------------------------------------------------
 func NewAddStudentRequest(admin string, students []*Student) *AddStudentRequest {
 	return &AddStudentRequest{
 		Admin:   admin,
@@ -42,6 +43,7 @@ func (msg AddStudentRequest) ValidateBasic() error {
 	return nil
 }
 
+// --------------------------------------------ACCEPT LEAVE REQUEST-----------------------------------------------------
 func NewAcceptLeaveRequest(admin string, leaveid string, status LeaveStatus) *AcceptLeaveRequest {
 	return &AcceptLeaveRequest{
 		Admin:   admin,
@@ -71,6 +73,7 @@ func (msg AcceptLeaveRequest) ValidateBasic() error {
 	return nil
 }
 
+// ----------------------------APPLY LEAVE REQUESTS-----------------------------------------------------------------------------
 func NewApplyLeaveRequest(address string, reason string, leaveid string, from *time.Time, to *time.Time) *ApplyLeaveRequest {
 	return &ApplyLeaveRequest{
 		Address: address,
@@ -102,6 +105,7 @@ func (msg ApplyLeaveRequest) ValidateBasic() error {
 	return nil
 }
 
+// -------------------------------------------REGISTER ADMIN------------------------------------------
 func NewRegisterAdminRequest(address string, name string) *RegisterAdminRequest {
 	return &RegisterAdminRequest{
 		Address: address,

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	// "x/lms/types"
-
 	"coslms/x/lms/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -25,7 +23,6 @@ func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequ
 				log.Fatal(err)
 			}
 			store.Set(types.StudentStoreKey(stud.Address), marshalAddStudents)
-			//k.GetStudent(ctx, sdk.AccAddress("lms1").String())
 		}
 		return ""
 

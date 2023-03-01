@@ -15,6 +15,7 @@ func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&AcceptLeaveRequest{}, "AcceptLeave", nil)
 }
 
+// Registering Interfaces
 func RegisterInterfaces(registry types.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&AddStudentRequest{},
@@ -22,7 +23,6 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 		&ApplyLeaveRequest{},
 		&AcceptLeaveRequest{},
 	)
-	//MsgServer.RegisterMsgServiceDesc(registry, &Msg_ServiceDesc)
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
 
@@ -35,5 +35,5 @@ func init() {
 	RegisterLegacyAminoCodec(amino)
 	cryptocodec.RegisterCrypto(amino)
 	sdk.RegisterLegacyAminoCodec(amino)
-	// RegisterLegacyAminoCodec(authzcodec.Amino)
+
 }
