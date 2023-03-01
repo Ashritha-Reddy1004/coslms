@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
+	"coslms/x/lms/types"
 )
 
 type queryServer struct {

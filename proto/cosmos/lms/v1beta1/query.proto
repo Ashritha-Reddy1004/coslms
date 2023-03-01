@@ -7,9 +7,15 @@ package cosmos.lms.v1beta1;
  import "cosmos/lms/v1beta1/tx.proto";
 
 service Query {
-    rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse){};
-    rpc GetLeaveRequests(GetLeaveRequestsRequest) returns (GetLeaveRequestsResponse){};
-    rpc GetLeaveApprovedRequests(GetLeaveApprovedRequestsRequest) returns (GetLeaveApprovedRequestsResponse){};
+    rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse){
+
+    };
+    rpc GetLeaveRequests(GetLeaveRequestsRequest) returns (GetLeaveRequestsResponse){
+
+    };
+    rpc GetLeaveApprovedRequests(GetLeaveApprovedRequestsRequest) returns (GetLeaveApprovedRequestsResponse){
+        
+    };
 }
 
 message GetStudentsRequest {

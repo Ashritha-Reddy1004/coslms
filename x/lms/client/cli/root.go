@@ -1,14 +1,15 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package cli
 
 import (
 	"fmt"
 	"log"
 	"os"
 
-	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
+	"coslms/x/lms/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/spf13/cobra"
 )

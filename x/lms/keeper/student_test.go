@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
+	"coslms/x/lms/types"
 	//"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/cosmos/cosmos-sdk/store"
@@ -14,7 +14,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	//"github.com/cosmos/cosmos-sdk/x/gov/keeper"
-	"github.com/Ashritha-Reddy1004/coslms/x/lms/keeper"
+	"coslms/x/lms/keeper"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

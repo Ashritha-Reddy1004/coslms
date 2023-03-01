@@ -1,4 +1,4 @@
-module github.com/Ashritha-Reddy1004/coslms
+module coslms
 
 go 1.19
 

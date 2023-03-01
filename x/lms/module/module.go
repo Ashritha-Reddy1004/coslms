@@ -4,23 +4,22 @@ import (
 	"context"
 	"encoding/json"
 
+	"coslms/x/lms/client/cli"
+	// "x/lms/client/cli"
+
+	"coslms/x/lms/keeper"
+
 	"coslms/x/lms/types"
 
-	"github.com/Ashritha-Reddy1004/coslms/x/lms/keeper"
-	abci "github.com/tendermint/tendermint/abci/types"
-
 	"github.com/cosmos/cosmos-sdk/client"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	"github.com/cosmos/cosmos-sdk/x/gov/simulation"
-	"github.com/cosmos/cosmos-sdk/x/params/client/cli"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
-
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/types/module"
+	"github.com/cosmos/cosmos-sdk/x/gov/simulation"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
+	abci "github.com/tendermint/tendermint/abci/types"
 )
 
 var (
@@ -55,12 +54,12 @@ func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *r
 
 // GetTxCmd returns the root tx command for the feegrant module.
 func (AppModuleBasic) GetTxCmd() *cobra.Command {
-	return cli.NewTxCmd()
+	return cli.GetTxCmd()
 }
 
 // GetQueryCmd returns no root query command for the feegrant module.
 func (AppModuleBasic) GetQueryCmd() *cobra.Command {
-	return cli.NewQueryCmd()
+	return cli.GetQueryCmd()
 }
 
 func (AppModule) ConsensusVersion() uint64 { return 1 }
