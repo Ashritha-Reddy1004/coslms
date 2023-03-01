@@ -15,6 +15,12 @@ type msgServer struct {
 	types.UnimplementedMsgServer
 }
 
+func NewMsgServerImpl(k Keeper) types.MsgServer {
+	return &msgServer{
+		Keeper: k,
+	}
+}
+
 // Add student method
 func (k msgServer) AddStudent(goCtx context.Context, addstudentreq *types.AddStudentRequest) (*types.AddStudentResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)

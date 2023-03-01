@@ -125,23 +125,23 @@ func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
 }
 
 // Function to GET LEAVES
-func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) {
+func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) types.ApplyLeaveRequest {
 	store := ctx.KVStore(k.storekey)
 	var t types.ApplyLeaveRequest
 	itr := store.Iterator(types.ApplyLeavesKey, nil)
 	for ; itr.Valid(); itr.Next() {
 		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
 	}
+	return t
 }
 
 // Function to GET APPROVED LEAVES
-func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) {
+func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) types.AcceptLeaveRequest {
 	store := ctx.KVStore(k.storekey)
 	var t types.AcceptLeaveRequest
 	itr := store.Iterator(types.AcceptLeavesKey, nil)
 	for ; itr.Valid(); itr.Next() {
 		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
 	}
+	return t
 }
