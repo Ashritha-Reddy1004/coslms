@@ -1,53 +1,45 @@
 syntax = "proto3";
 
-package lms.v1beta1;
-option go_package="x/lms/types";
+package cosmos.lms.v1beta1;
 
-import "proto/cosmos/lms/v1beta1/tx.proto";
+ option go_package = "x/lms/types";
 
-// import "google/protobuf/timestamp.proto";
+ import "cosmos/lms/v1beta1/tx.proto";
+ import "google/api/annotations.proto" ; 
 
-// message Students {
-//     string address = 1;
-//     string name = 2;
-//     string id = 3;
-// }
-message GetStudentRequest{
-    string id=1;
+service Query {
+    rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse){
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/studentid";
+    };
+    rpc GetLeaveRequests(GetLeaveRequestsRequest) returns (GetLeaveRequestsResponse){
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/leaveid";
+    };
+    rpc GetLeaveApprovedRequests(GetLeaveApprovedRequestsRequest) returns (GetLeaveApprovedRequestsResponse){
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/leaveid";
+    };
 }
 
-message GetStudentResponse{
-    Student student=1;
+message GetStudentsRequest {
+ 
 }
 
-message GetStudentsRequest{
+message GetStudentsResponse {
+    repeated Student students = 1;
+}
+
+message GetLeaveRequestsRequest {
     
 }
 
-message GetStudentsResponse{
-    repeated Student  students=1;
+message GetLeaveRequestsResponse {
+    repeated ApplyLeaveRequest leaverequests = 1;
 }
 
-message GetLeaveRequestsRequest{
-
+message GetLeaveApprovedRequestsRequest {
+    
 }
 
-message GetLeaveRequestsResponse{
-    repeated ApplyLeaveRequest leaverequest=1;
+message GetLeaveApprovedRequestsResponse {
+     repeated ApplyLeaveRequest leaverequests = 1;
+ }
 
-}
-
-message GetLeaveApprovesRequest{
-
-}
-
-message GetLeaveApprovesResponse{
-    repeated AcceptLeaveRequest leaveapprove=1;
-}
-
-service Query{
-    rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse){};
-    rpc GetStudent(GetStudentRequest) returns (GetStudentResponse){};
-    rpc GetLeaveRequests(GetLeaveRequestsRequest) returns (GetLeaveApprovesResponse){};
-    rpc GetLeaveApproves(GetLeaveApprovesRequest) returns (GetLeaveApprovesResponse){};
-}

@@ -1,15 +1,15 @@
-syntax="proto3";
-package lms.v1beta1;
+syntax = "proto3";
 
-option go_package="x/lms/types";
+package cosmos.lms.v1beta1;
 
-import "proto/cosmos/lms/v1beta1/tx.proto";
-//import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option go_package = "x/lms/types";
 
+import "cosmos/lms/v1beta1/tx.proto";
+import "gogoproto/gogo.proto";
 
 message GenesisState{
-    repeated Student student=1;
-    repeated AcceptLeaveRequest admin=2;
-    repeated ApplyLeaveRequest applyleave=3;
-    repeated RegisterAdminRequest acceptleave=4;
+    repeated Student student=1 ;
+    repeated AcceptLeaveRequest admin=2 [(gogoproto.nullable) = false];
+    repeated ApplyLeaveRequest applyleave=3 [(gogoproto.nullable) = false];
+    repeated RegisterAdminRequest acceptleave=4 [(gogoproto.nullable) = false];
 }
