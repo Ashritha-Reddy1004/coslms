@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,36 +16,106 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/Ashritha-Reddy1004/coslms/x/lms/types"
+	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 )
 
 // queryCmd represents the query command
-var queryCmd = &cobra.Command{
-	Use:   "query",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+// NewTxCmd returns a root CLI command handler for all x/lms transaction commands.
+func GetQueryCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   types.ModuleName,
+		Short: "Querying commands for the LMS module",
+		// DisableFlagParsing:         true,
+		// SuggestionsMinimumDistance: 2,
+		RunE: client.ValidateCmd,
+	}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("query called")
-	},
+	cmd.AddCommand(
+		GetLeavesCmd(),
+		GetStudentsCmd(),
+		GetApprovedLeavesCmd(),
+	)
+
+	return cmd
+}
+func GetLeavesCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "listallleaves",
+		Short: "List all the leaves",
+		Long: `List all the leaves which are accepted or rejected by the admin,
+		`,
+		RunE: func(ctx *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientQueryContext(ctx)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.GetLeaveRequestsRequest{}
+			res, err := queryClient.GetLeaveRequests(ctx.Context(), params)
+			return clientCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+	return cmd
 }
 
+func GetStudentsCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "listallstudents",
+		Short: "List all the students",
+		Long: `List all the students which are added by admin,
+		`,
+		RunE: func(ctx *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientQueryContext(ctx)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.GetStudentsRequest{}
+			res, err := queryClient.GetStudents(ctx.Context(), params)
+			return clientCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+	return cmd
+}
+
+func GetApprovedLeavesCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "listallstudents",
+		Short: "List all the students",
+		Long: `List all the students which are added by admin,
+		`,
+		RunE: func(ctx *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientQueryContext(ctx)
+			if err != nil {
+				return err
+			}
+			queryClient := types.NewQueryClient(clientCtx)
+			params := &types.GetLeaveApprovedRequestsRequest{}
+			res, err := queryClient.GetLeaveApprovedRequests(ctx.Context(), params)
+			return clientCtx.PrintProto(res)
+		},
+	}
+	flags.AddQueryFlagsToCmd(cmd)
+	return cmd
+}
 func init() {
-	rootCmd.AddCommand(queryCmd)
+	rootCmd.AddCommand(GetStudentsCmd())
+	rootCmd.AddCommand(GetLeavesCmd())
+	rootCmd.AddCommand(GetApprovedLeavesCmd())
+	// rootCmd.SuggestionsMinimumDistance = 3
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// queryCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// getuserCmd.PersistentFlags().String("email", "", "User email")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// queryCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// getuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
