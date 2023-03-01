@@ -36,8 +36,6 @@
 
 **To know more about query commands**
    
-   
-   
     $ simd query [command] --help
 
 
