@@ -28,10 +28,12 @@ import (
 // txCmd represents the tx command
 func GetTxCmd() *cobra.Command {
 	studentTxCmd := &cobra.Command{
-		Use:   types.ModuleName,
-		Short: "leave management system",
-		Long:  `lms module commands`,
-		RunE:  client.ValidateCmd,
+		Use:                        types.ModuleName,
+		DisableFlagParsing:         false,
+		SuggestionsMinimumDistance: 4,
+		Short:                      "leave management system",
+		Long:                       `lms module commands`,
+		RunE:                       client.ValidateCmd,
 	}
 	studentTxCmd.AddCommand(
 		RegisterAdminCmd(),
@@ -56,9 +58,10 @@ func GetTxCmd() *cobra.Command {
 // To add and approve students
 func AddStudentCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "AddUser",
+		Use:   "addstudent [admin] [student]",
 		Short: "Add Student",
 		Long:  `Function to add student`,
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -89,9 +92,10 @@ func AddStudentCmd() *cobra.Command {
 // To register admin
 func RegisterAdminCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Admin Registration",
+		Use:   "registeradmin [name] [address]",
 		Short: "Register Admin",
 		Long:  `To Register Admin`,
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -110,9 +114,10 @@ func RegisterAdminCmd() *cobra.Command {
 // To apply leave by the student
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Leave Application",
+		Use:   "applyleave [address] [reason] [leaveid] [from] [to]",
 		Short: "Apply leave",
 		Long:  `Leave applied by the student which has to be approved by the admin`,
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -136,9 +141,10 @@ func ApplyLeaveCmd() *cobra.Command {
 // To accept leave
 func AcceptLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Accept Leave",
+		Use:   "acceptleave [admin] [leaveid] [status]",
 		Short: "Accept Leave",
 		Long:  `This is done by the admin to accept or reject leave which are submitted by the student`,
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
