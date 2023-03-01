@@ -27,11 +27,12 @@ import (
 // NewTxCmd returns a root CLI command handler for all x/lms transaction commands.
 func GetQueryCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   types.ModuleName,
-		Short: "Querying commands for the LMS module",
-		// DisableFlagParsing:         true,
-		// SuggestionsMinimumDistance: 2,
-		RunE: client.ValidateCmd,
+		Use:                        types.ModuleName,
+		Short:                      "Query Commands",
+		Long:                       "Querying commands for the LMS module",
+		DisableFlagParsing:         true,
+		SuggestionsMinimumDistance: 2,
+		RunE:                       client.ValidateCmd,
 	}
 
 	cmd.AddCommand(
@@ -46,7 +47,7 @@ func GetQueryCmd() *cobra.Command {
 // Get leave command
 func GetLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "getappliedleaves",
+		Use:   "getleaves",
 		Short: "List all applied leaves",
 		Long:  `List all the leaves which are applied by the students`,
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -67,7 +68,7 @@ func GetLeavesCmd() *cobra.Command {
 // Get Students Command
 func GetStudentsCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "togetstudents",
+		Use:   "getstudents",
 		Short: "List all the students",
 		Long:  `List all the students which are added by admin`,
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -88,7 +89,7 @@ func GetStudentsCmd() *cobra.Command {
 // Get Approved Leaves command
 func GetApprovedLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "togetapprovedleaves",
+		Use:   "getapprovedleaves",
 		Short: "List all approved leaves by admin",
 		Long:  `List all the approved leaves which are verified by admin`,
 		RunE: func(ctx *cobra.Command, args []string) error {
