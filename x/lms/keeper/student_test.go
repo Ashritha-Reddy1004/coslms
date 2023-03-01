@@ -48,34 +48,34 @@ func (s *TestSuite) SetupTest() {
 }
 
 func (s *TestSuite) TestRegisterAdmin() {
-	type RegisterAdminTest struct {
-		arg1     types.RegisterAdminRequest
+	type registerAdminTest struct {
+		data     types.RegisterAdminRequest
 		expected string
 	}
-	var RegisterAdminTests = []RegisterAdminTest{
+	var RegisterAdminTests = []registerAdminTest{
 		{
-			arg1: types.RegisterAdminRequest{
+			data: types.RegisterAdminRequest{
 				Name:    "Ashritha",
 				Address: sdk.AccAddress("a1b2c3").String(),
 			},
 			expected: "Admin Registered Successfully",
 		},
 		{
-			arg1: types.RegisterAdminRequest{
+			data: types.RegisterAdminRequest{
 				Name:    "Ankith",
 				Address: sdk.AccAddress("abcd").String(),
 			},
 			expected: "Admin Registered Successfully",
 		},
 		{
-			arg1: types.RegisterAdminRequest{
+			data: types.RegisterAdminRequest{
 				Name:    "Ram",
 				Address: "",
 			},
 			expected: "Address field cannot be null",
 		},
 		{
-			arg1: types.RegisterAdminRequest{
+			data: types.RegisterAdminRequest{
 				Name:    "",
 				Address: sdk.AccAddress("5678").String(),
 			},
@@ -84,8 +84,8 @@ func (s *TestSuite) TestRegisterAdmin() {
 	}
 	// require := s.Require()
 	for _, test := range RegisterAdminTests {
-		if output := s.studentKeeper.RegisterAdmins(s.ctx, &test.arg1); output != test.expected {
-			// require.Equal(test.expected, output)
+		if output := s.studentKeeper.RegisterAdmins(s.ctx, &test.data); output != test.expected {
+			fmt.Println(test.expected, output)
 			fmt.Println("FAILED")
 		}
 	}
