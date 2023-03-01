@@ -1,11 +1,10 @@
 ## LEAVE MANAGEMET SYSTEM USING COSMOS ##
 
 
-
-
 **To generate proto**
 
     $ make proto-gen
+
 
 **To build lmsapp**
 
@@ -37,8 +36,3 @@
 **To know more about query commands**
    
     $ simd query [command] --help
-
-
-
-
-
