@@ -14,6 +14,7 @@ var (
 	sequenceKey     = []byte{0x05}
 )
 
+// key generation for admin store
 func AdminStoreKey(address string) []byte {
 	key := make([]byte, len(AdminKey)+len(address))
 	copy(key, AdminKey)
@@ -21,6 +22,7 @@ func AdminStoreKey(address string) []byte {
 	return key
 }
 
+// key generation for student store
 func StudentStoreKey(studentID string) []byte {
 	key := make([]byte, len(StudentKey)+len(studentID))
 	copy(key, StudentKey)
@@ -28,6 +30,7 @@ func StudentStoreKey(studentID string) []byte {
 	return key
 }
 
+// key generation for accept leaves store
 func AcceptLeavesStoreKey(admin string, leaveID string) []byte {
 	key := make([]byte, len(AcceptLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
 	copy(key, AcceptLeavesKey)
@@ -36,6 +39,8 @@ func AcceptLeavesStoreKey(admin string, leaveID string) []byte {
 	copy(key[len(sequenceKey):], leaveID)
 	return key
 }
+
+// key generation for apply leaves store
 func ApplyLeavesStoreKey(admin string, leaveID string) []byte {
 	key := make([]byte, len(ApplyLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
 	copy(key, ApplyLeavesKey)

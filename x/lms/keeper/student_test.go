@@ -21,6 +21,7 @@ import (
 	dbm "github.com/tendermint/tm-db"
 )
 
+// Test suite struct
 type TestSuite struct {
 	suite.Suite
 	ctx           sdk.Context
@@ -28,6 +29,7 @@ type TestSuite struct {
 	*assert.Assertions
 }
 
+// TestSuite setup
 func (s *TestSuite) SetupTest() {
 
 	fmt.Println("Setup in progress")
@@ -47,6 +49,7 @@ func (s *TestSuite) SetupTest() {
 
 }
 
+// Test for Register Admin
 func (s *TestSuite) TestRegisterAdmin() {
 	type registerAdminTest struct {
 		data     types.RegisterAdminRequest
@@ -92,6 +95,7 @@ func (s *TestSuite) TestRegisterAdmin() {
 
 }
 
+// Test for Apply leave method
 func (s *TestSuite) TestApplyLeave() {
 	type applyLeaveTest struct {
 		arg1     types.ApplyLeaveRequest
@@ -172,6 +176,7 @@ func (s *TestSuite) TestApplyLeave() {
 	}
 }
 
+// Test for Accept Leave method
 func (s *TestSuite) TestAcceptLeaves() {
 	type AcceptLeavesTest struct {
 		req      types.AcceptLeaveRequest
@@ -225,6 +230,7 @@ func TestTestSuite(t *testing.T) {
 	suite.Run(t, new(TestSuite))
 }
 
+// Test for Add students method
 func (s *TestSuite) TestAddStudents() {
 	type AddStudentsTest struct {
 		req      types.AddStudentRequest
@@ -245,16 +251,19 @@ func (s *TestSuite) TestAddStudents() {
 	}
 }
 
+// Test for Get Student query
 func (s *TestSuite) TestGetStudent() {
 	s.TestAddStudents()
 	s.studentKeeper.GetStudent(s.ctx)
 }
 
+// Test for Get leaves query
 func (s *TestSuite) TestGetLeavesRequest() {
 	s.TestApplyLeave()
 	s.studentKeeper.GetLeaveRequests(s.ctx, &types.GetLeaveRequestsRequest{})
 }
 
+// Test for Get Approved Leaves
 func (s *TestSuite) TestGetApprovedLeaves() {
 	s.TestAcceptLeaves()
 	s.studentKeeper.GetApprovedLeaves(s.ctx, types.GetLeaveApprovedRequestsRequest{})

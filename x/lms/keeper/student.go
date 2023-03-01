@@ -127,6 +127,7 @@ func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
 	return store.Get(types.AdminStoreKey(Address))
 }
 
+// Function to GET LEAVES
 func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) {
 	store := ctx.KVStore(k.storekey)
 	var t types.ApplyLeaveRequest
@@ -137,6 +138,7 @@ func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeav
 	}
 }
 
+// Function to GET APPROVED LEAVES
 func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) {
 	store := ctx.KVStore(k.storekey)
 	var t types.AcceptLeaveRequest

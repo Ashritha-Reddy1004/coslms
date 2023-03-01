@@ -29,7 +29,7 @@ import (
 func GetTxCmd() *cobra.Command {
 	studentTxCmd := &cobra.Command{
 		Use:   types.ModuleName,
-		Short: "|lms|",
+		Short: "leave management system",
 		Long:  `lms module commands`,
 		RunE:  client.ValidateCmd,
 	}
@@ -52,11 +52,13 @@ func GetTxCmd() *cobra.Command {
 	// 		fmt.Println("tx called")
 
 }
+
+// To add and approve students
 func AddStudentCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Adding User",
-		Short: "",
-		Long:  "",
+		Use:   "AddUser",
+		Short: "Add Student",
+		Long:  `Function to add student`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -84,11 +86,12 @@ func AddStudentCmd() *cobra.Command {
 	return cmd
 }
 
+// To register admin
 func RegisterAdminCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "Admin Registration",
-		Short: "",
-		Long:  "",
+		Short: "Register Admin",
+		Long:  `To Register Admin`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -104,11 +107,12 @@ func RegisterAdminCmd() *cobra.Command {
 	return cmd
 }
 
+// To apply leave by the student
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "Leave Application",
-		Short: "",
-		Long:  "",
+		Short: "Apply leave",
+		Long:  `Leave applied by the student which has to be approved by the admin`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -128,11 +132,13 @@ func ApplyLeaveCmd() *cobra.Command {
 	}
 	return cmd
 }
+
+// To accept leave
 func AcceptLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Apply Leave",
-		Short: "",
-		Long:  "",
+		Use:   "Accept Leave",
+		Short: "Accept Leave",
+		Long:  `This is done by the admin to accept or reject leave which are submitted by the student`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
