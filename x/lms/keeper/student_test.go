@@ -252,7 +252,7 @@ func (s *TestSuite) TestGetStudent() {
 
 func (s *TestSuite) TestGetLeavesRequest() {
 	s.TestApplyLeave()
-	s.studentKeeper.GetLeaveRequests(s.ctx, types.GetLeaveRequestsRequest{})
+	s.studentKeeper.GetLeaveRequests(s.ctx, &types.GetLeaveRequestsRequest{})
 }
 
 func (s *TestSuite) TestGetApprovedLeaves() {

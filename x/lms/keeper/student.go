@@ -127,7 +127,7 @@ func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
 	return store.Get(types.AdminStoreKey(Address))
 }
 
-func (k Keeper) GetLeaveRequests(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) {
+func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) {
 	store := ctx.KVStore(k.storekey)
 	var t types.ApplyLeaveRequest
 	itr := store.Iterator(types.ApplyLeavesKey, nil)

@@ -1,9 +1,9 @@
 package types
 
 const (
-	ModuleName = "coslms"
-
-	StoreKey = ModuleName
+	ModuleName   = "coslms"
+	StoreKey     = ModuleName
+	QuerierRoute = ModuleName
 )
 
 var (

@@ -10,9 +10,7 @@ type Keeper struct {
 	cdc      codec.BinaryCodec
 }
 
-func NewKeeper(
-	storekey storetypes.StoreKey,
-	cdc codec.BinaryCodec,
+func NewKeeper(storekey storetypes.StoreKey, cdc codec.BinaryCodec,
 ) Keeper {
 	return Keeper{
 		cdc:      cdc,
