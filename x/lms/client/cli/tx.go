@@ -21,6 +21,7 @@ import (
 	"coslms/x/lms/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
 )
@@ -160,6 +161,7 @@ func AcceptLeaveCmd() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 func init() {
