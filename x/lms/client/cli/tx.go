@@ -23,6 +23,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 )
 
@@ -87,6 +88,7 @@ func AddStudentCmd() *cobra.Command {
 
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 
@@ -102,13 +104,15 @@ func RegisterAdminCmd() *cobra.Command {
 			if err != nil {
 				panic(err)
 			}
-			address := args[0]
-			name := args[1]
+			address, _ := sdk.AccAddressFromBech32(args[1])
+			name := args[0]
 			msgClient := types.NewRegisterAdminRequest(address, name)
+			// panic("calll 1")
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 
@@ -136,6 +140,7 @@ func ApplyLeaveCmd() *cobra.Command {
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 

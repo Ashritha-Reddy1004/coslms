@@ -63,8 +63,8 @@ message AcceptLeaveResponse {
 }
 
 service Msg {
-    rpc RegisterAdmin(RegisterAdminRequest) returns (RegisterAdminResponse);
-    rpc AddStudent(AddStudentRequest) returns (AddStudentResponse);
-    rpc ApplyLeave(ApplyLeaveRequest) returns  (ApplyLeaveResponse);
-    rpc AcceptLeave(AcceptLeaveRequest) returns (AcceptLeaveResponse);
+    rpc AdminRegister(RegisterAdminRequest) returns (RegisterAdminResponse);
+    rpc StudentAdd(AddStudentRequest) returns (AddStudentResponse);
+    rpc LeaveApply(ApplyLeaveRequest) returns  (ApplyLeaveResponse);
+    rpc LeaveAccept(AcceptLeaveRequest) returns (AcceptLeaveResponse);
 }

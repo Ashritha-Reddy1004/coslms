@@ -39,7 +39,6 @@ func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 	} else {
 
 		store := ctx.KVStore(k.storekey)
-		//key := types.StudentKey
 		k.cdc.MustMarshal(registeradminreq)
 
 		marshalAdmin, err := k.cdc.Marshal(registeradminreq)

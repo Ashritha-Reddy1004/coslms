@@ -28,18 +28,18 @@ func (msg AddStudentRequest) GetSignBytes() []byte {
 
 // GetSigners Implements Msg.
 func (msg AddStudentRequest) GetSigners() []sdk.AccAddress {
-	fromAddress, _ := sdk.AccAddressFromBech32("Welcome")
+	fromAddress, _ := sdk.AccAddressFromBech32(msg.Admin)
 	return []sdk.AccAddress{fromAddress}
 }
 
 func (msg AddStudentRequest) ValidateBasic() error {
-	if _, err := sdk.AccAddressFromBech32("Welcome"); err != nil {
+	if _, err := sdk.AccAddressFromBech32(msg.Admin); err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("From address invalid: %s", err)
 	}
 
-	if _, err := sdk.AccAddressFromBech32("Welcome"); err != nil {
-		return sdkerrors.ErrInvalidAddress.Wrapf("To address invalid: %s", err)
-	}
+	// if _, err := sdk.AccAddressFromBech32("Welcome"); err != nil {
+	// 	return sdkerrors.ErrInvalidAddress.Wrapf("To address invalid: %s", err)
+	// }
 	return nil
 }
 
@@ -58,18 +58,15 @@ func (msg AcceptLeaveRequest) GetSignBytes() []byte {
 
 // GetSigners Implements Msg.
 func (msg AcceptLeaveRequest) GetSigners() []sdk.AccAddress {
-	fromAddress, _ := sdk.AccAddressFromBech32("Welcome")
+	fromAddress, _ := sdk.AccAddressFromBech32(msg.Admin)
 	return []sdk.AccAddress{fromAddress}
 }
 
 func (msg AcceptLeaveRequest) ValidateBasic() error {
-	if _, err := sdk.AccAddressFromBech32("Welcome"); err != nil {
+	if _, err := sdk.AccAddressFromBech32(msg.Admin); err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("From address invalid: %s", err)
 	}
 
-	if _, err := sdk.AccAddressFromBech32("THank you"); err != nil {
-		return sdkerrors.ErrInvalidAddress.Wrapf("To address invalid: %s", err)
-	}
 	return nil
 }
 
@@ -90,25 +87,22 @@ func (msg ApplyLeaveRequest) GetSignBytes() []byte {
 
 // GetSigners Implements Msg.
 func (msg ApplyLeaveRequest) GetSigners() []sdk.AccAddress {
-	fromAddress, _ := sdk.AccAddressFromBech32("hii")
+	fromAddress, _ := sdk.AccAddressFromBech32(msg.Address)
 	return []sdk.AccAddress{fromAddress}
 }
 
 func (msg ApplyLeaveRequest) ValidateBasic() error {
-	if _, err := sdk.AccAddressFromBech32("Welcome"); err != nil {
+	if _, err := sdk.AccAddressFromBech32(msg.Address); err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("From address invalid: %s", err)
 	}
 
-	if _, err := sdk.AccAddressFromBech32("Thank you"); err != nil {
-		return sdkerrors.ErrInvalidAddress.Wrapf("To address invalid: %s", err)
-	}
 	return nil
 }
 
 // -------------------------------------------REGISTER ADMIN------------------------------------------
-func NewRegisterAdminRequest(address string, name string) *RegisterAdminRequest {
+func NewRegisterAdminRequest(address sdk.AccAddress, name string) *RegisterAdminRequest {
 	return &RegisterAdminRequest{
-		Address: address,
+		Address: address.String(),
 		Name:    name,
 	}
 }
@@ -119,17 +113,14 @@ func (msg RegisterAdminRequest) GetSignBytes() []byte {
 
 // GetSigners Implements Msg.
 func (msg RegisterAdminRequest) GetSigners() []sdk.AccAddress {
-	fromAddress, _ := sdk.AccAddressFromBech32("Welcome")
+	fromAddress, _ := sdk.AccAddressFromBech32(msg.Address)
 	return []sdk.AccAddress{fromAddress}
 }
 
 func (msg RegisterAdminRequest) ValidateBasic() error {
-	if _, err := sdk.AccAddressFromBech32("Welcome"); err != nil {
+	if _, err := sdk.AccAddressFromBech32(msg.Address); err != nil {
 		return sdkerrors.ErrInvalidAddress.Wrapf("From address invalid: %s", err)
 	}
 
-	if _, err := sdk.AccAddressFromBech32("Thank you"); err != nil {
-		return sdkerrors.ErrInvalidAddress.Wrapf("To address invalid : %s", err)
-	}
 	return nil
 }
