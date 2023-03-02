@@ -71,8 +71,9 @@ func (msg AcceptLeaveRequest) ValidateBasic() error {
 }
 
 // ----------------------------APPLY LEAVE REQUESTS-----------------------------------------------------------------------------
-func NewApplyLeaveRequest(address string, reason string, leaveid string, from *time.Time, to *time.Time) *ApplyLeaveRequest {
+func NewApplyLeaveRequest(admin string, address string, reason string, leaveid string, from *time.Time, to *time.Time) *ApplyLeaveRequest {
 	return &ApplyLeaveRequest{
+		Admin:   admin,
 		Address: address,
 		Reason:  reason,
 		From:    from,

@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"log"
 
 	"coslms/x/lms/types"
@@ -102,16 +101,17 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 }
 
 // Function to GET STUDENT
-func (k Keeper) GetStudent(ctx sdk.Context) {
+func (k Keeper) GetStudent(ctx sdk.Context) []types.Student {
 	store := ctx.KVStore(k.storekey)
 	var t types.Student
+	var students []types.Student
 	itr := store.Iterator(types.StudentKey, nil)
 	for ; itr.Valid(); itr.Next() {
 		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
+		students = append(students, t)
 
 	}
-
+	return students
 }
 
 // Function to GET ADMIN

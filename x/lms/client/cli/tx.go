@@ -63,7 +63,7 @@ func AddStudentCmd() *cobra.Command {
 		Use:   "addstudent [admin] [student]",
 		Short: "Add Student",
 		Long:  `Function to add student`,
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -159,11 +159,17 @@ func AcceptLeaveCmd() *cobra.Command {
 			admin := args[0]
 			leaveid := args[1]
 			status := args[2]
-			msgClient := types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_REJECTED)
-			if status == "0" {
+			var msgClient *types.AcceptLeaveRequest
+			if status == "2" {
+				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_REJECTED)
+			} else if status == "1" {
 				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_ACCEPTED)
+			} else {
+				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_UNDEFINED)
+
 			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
+
 		},
 	}
 	flags.AddTxFlagsToCmd(cmd)
