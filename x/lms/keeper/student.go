@@ -101,27 +101,29 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 }
 
 // Function to GET STUDENT
-func (k Keeper) GetStudent(ctx sdk.Context) []types.Student {
+func (k Keeper) GetStudent(ctx sdk.Context, getstudents *types.GetStudentsRequest) []*types.Student {
 	store := ctx.KVStore(k.storekey)
-	var t types.Student
-	var students []types.Student
+
+	var students []*types.Student
 	itr := store.Iterator(types.StudentKey, nil)
 	for ; itr.Valid(); itr.Next() {
+		var t types.Student
 		k.cdc.Unmarshal(itr.Value(), &t)
-		students = append(students, t)
+		students = append(students, &t)
 
 	}
+	// panic(students)
 	return students
 }
 
 // Function to GET ADMIN
-func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
-	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
-		panic(err)
-	}
-	store := ctx.KVStore(k.storekey)
-	return store.Get(types.AdminStoreKey(Address))
-}
+// func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
+// 	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
+// 		panic(err)
+// 	}
+// 	store := ctx.KVStore(k.storekey)
+// 	return store.Get(types.AdminStoreKey(Address))
+// }
 
 // Function to GET LEAVES
 func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) types.ApplyLeaveRequest {

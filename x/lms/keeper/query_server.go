@@ -4,13 +4,20 @@ import (
 	"context"
 
 	"coslms/x/lms/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 var _ types.QueryServer = Keeper{}
 
 // Method to get students
 func (k Keeper) GetStudents(goCtx context.Context, req *types.GetStudentsRequest) (*types.GetStudentsResponse, error) {
-	return &types.GetStudentsResponse{}, nil
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	students := k.GetStudent(ctx, req)
+	res := types.GetStudentsResponse{
+		Students: students,
+	}
+	return &res, nil
 }
 
 // Method to get applied leaves
