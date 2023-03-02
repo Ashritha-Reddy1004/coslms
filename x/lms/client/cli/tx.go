@@ -119,24 +119,25 @@ func RegisterAdminCmd() *cobra.Command {
 // To apply leave by the student
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "applyleave [address] [reason] [leaveid] [from] [to]",
+		Use:   "applyleave [admin] [address] [reason] [leaveid] [from] [to]",
 		Short: "Apply leave",
 		Long:  `Leave applied by the student which has to be approved by the admin`,
-		Args:  cobra.ExactArgs(5),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				panic(err)
 			}
 			var format string = "2006-Jan-06"
-			fromDate, _ := time.Parse(format, args[3])
-			toDate, _ := time.Parse(format, args[4])
-			address := args[0]
-			reason := args[1]
-			leaveid := args[2]
+			fromDate, _ := time.Parse(format, args[4])
+			toDate, _ := time.Parse(format, args[5])
+			admin := args[0]
+			address := args[1]
+			reason := args[2]
+			leaveid := args[3]
 			from := &fromDate
 			to := &toDate
-			msgClient := types.NewApplyLeaveRequest(address, reason, leaveid, from, to)
+			msgClient := types.NewApplyLeaveRequest(admin, address, reason, leaveid, from, to)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 		},
 	}
