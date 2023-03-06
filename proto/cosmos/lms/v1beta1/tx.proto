@@ -34,12 +34,13 @@ message AddStudentRequest {
 
 message AddStudentResponse{}
 
-message ApplyLeaveRequest {   
-    string address = 1;   
-    string reason = 2;  
-    google.protobuf.Timestamp from = 3 [(gogoproto.stdtime) = true];  
-    google.protobuf.Timestamp to = 4 [(gogoproto.stdtime) = true];
-    string leave_id=5;
+message ApplyLeaveRequest { 
+    string admin=1;  
+    string address = 2;   
+    string reason = 3;  
+    google.protobuf.Timestamp from = 4 [(gogoproto.stdtime) = true];  
+    google.protobuf.Timestamp to = 5 [(gogoproto.stdtime) = true];
+    string leave_id=6;
 }
 
 message ApplyLeaveResponse {
@@ -63,8 +64,8 @@ message AcceptLeaveResponse {
 }
 
 service Msg {
-    rpc RegisterAdmin(RegisterAdminRequest) returns (RegisterAdminResponse);
-    rpc AddStudent(AddStudentRequest) returns (AddStudentResponse);
-    rpc ApplyLeave(ApplyLeaveRequest) returns  (ApplyLeaveResponse);
-    rpc AcceptLeave(AcceptLeaveRequest) returns (AcceptLeaveResponse);
+    rpc AdminRegister(RegisterAdminRequest) returns (RegisterAdminResponse);
+    rpc StudentAdd(AddStudentRequest) returns (AddStudentResponse);
+    rpc LeaveApply(ApplyLeaveRequest) returns  (ApplyLeaveResponse);
+    rpc LeaveAccept(AcceptLeaveRequest) returns (AcceptLeaveResponse);
 }

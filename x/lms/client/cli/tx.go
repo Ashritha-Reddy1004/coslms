@@ -21,17 +21,21 @@ import (
 	"coslms/x/lms/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 )
 
 // txCmd represents the tx command
 func GetTxCmd() *cobra.Command {
 	studentTxCmd := &cobra.Command{
-		Use:   types.ModuleName,
-		Short: "|lms|",
-		Long:  `lms module commands`,
-		RunE:  client.ValidateCmd,
+		Use:                        types.ModuleName,
+		DisableFlagParsing:         false,
+		SuggestionsMinimumDistance: 4,
+		Short:                      "leave management system",
+		Long:                       `lms module commands`,
+		RunE:                       client.ValidateCmd,
 	}
 	studentTxCmd.AddCommand(
 		RegisterAdminCmd(),
@@ -52,11 +56,14 @@ func GetTxCmd() *cobra.Command {
 	// 		fmt.Println("tx called")
 
 }
+
+// To add and approve students
 func AddStudentCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Adding User",
-		Short: "",
-		Long:  "",
+		Use:   "addstudent [admin] [student]",
+		Short: "Add Student",
+		Long:  `Function to add student`,
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -81,58 +88,70 @@ func AddStudentCmd() *cobra.Command {
 
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 
+// To register admin
 func RegisterAdminCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Admin Registration",
-		Short: "",
-		Long:  "",
+		Use:   "registeradmin [name] [address]",
+		Short: "Register Admin",
+		Long:  `To Register Admin`,
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				panic(err)
 			}
-			address := args[0]
-			name := args[1]
+			address, _ := sdk.AccAddressFromBech32(args[1])
+			name := args[0]
 			msgClient := types.NewRegisterAdminRequest(address, name)
+			// panic("calll 1")
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 
+// To apply leave by the student
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Leave Application",
-		Short: "",
-		Long:  "",
+		Use:   "applyleave [admin] [address] [reason] [leaveid] [from] [to]",
+		Short: "Apply leave",
+		Long:  `Leave applied by the student which has to be approved by the admin`,
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				panic(err)
 			}
 			var format string = "2006-Jan-06"
-			fromDate, _ := time.Parse(format, args[3])
-			toDate, _ := time.Parse(format, args[4])
-			address := args[0]
-			reason := args[1]
-			leaveid := args[2]
+			fromDate, _ := time.Parse(format, args[4])
+			toDate, _ := time.Parse(format, args[5])
+			admin := args[0]
+			address := args[1]
+			reason := args[2]
+			leaveid := args[3]
 			from := &fromDate
 			to := &toDate
-			msgClient := types.NewApplyLeaveRequest(address, reason, leaveid, from, to)
+			msgClient := types.NewApplyLeaveRequest(admin, address, reason, leaveid, from, to)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
+
+// To accept leave
 func AcceptLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Apply Leave",
-		Short: "",
-		Long:  "",
+		Use:   "acceptleave [admin] [leaveid] [status]",
+		Short: "Accept Leave",
+		Long:  `This is done by the admin to accept or reject leave which are submitted by the student`,
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -141,13 +160,20 @@ func AcceptLeaveCmd() *cobra.Command {
 			admin := args[0]
 			leaveid := args[1]
 			status := args[2]
-			msgClient := types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_REJECTED)
-			if status == "0" {
+			var msgClient *types.AcceptLeaveRequest
+			if status == "2" {
+				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_REJECTED)
+			} else if status == "1" {
 				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_ACCEPTED)
+			} else {
+				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_UNDEFINED)
+
 			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
+
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 func init() {

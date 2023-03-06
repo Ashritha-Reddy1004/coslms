@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	// "x/lms/types"
-
 	"coslms/x/lms/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -25,7 +23,6 @@ func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequ
 				log.Fatal(err)
 			}
 			store.Set(types.StudentStoreKey(stud.Address), marshalAddStudents)
-			//k.GetStudent(ctx, sdk.AccAddress("lms1").String())
 		}
 		return ""
 
@@ -42,7 +39,6 @@ func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 	} else {
 
 		store := ctx.KVStore(k.storekey)
-		//key := types.StudentKey
 		k.cdc.MustMarshal(registeradminreq)
 
 		marshalAdmin, err := k.cdc.Marshal(registeradminreq)
@@ -106,43 +102,46 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 }
 
 // Function to GET STUDENT
-func (k Keeper) GetStudent(ctx sdk.Context) {
+func (k Keeper) GetStudent(ctx sdk.Context, getstudents *types.GetStudentsRequest) []*types.Student {
 	store := ctx.KVStore(k.storekey)
-	var t types.Student
+
+	var students []*types.Student
 	itr := store.Iterator(types.StudentKey, nil)
 	for ; itr.Valid(); itr.Next() {
+		var t types.Student
 		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
+		students = append(students, &t)
+		fmt.Println("Details of the students are : ")
 
 	}
-
+	return students
 }
 
-// Function to GET ADMIN
-func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
-	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
-		panic(err)
-	}
+// Function to GET LEAVES
+func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, req *types.GetLeaveRequestsRequest) []*types.ApplyLeaveRequest {
 	store := ctx.KVStore(k.storekey)
-	return store.Get(types.AdminStoreKey(Address))
-}
-
-func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) {
-	store := ctx.KVStore(k.storekey)
-	var t types.ApplyLeaveRequest
+	var leaves []*types.ApplyLeaveRequest
 	itr := store.Iterator(types.ApplyLeavesKey, nil)
 	for ; itr.Valid(); itr.Next() {
-		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
+		var leave types.ApplyLeaveRequest
+		k.cdc.Unmarshal(itr.Value(), &leave)
+		leaves = append(leaves, &leave)
+		fmt.Println("List of all the applied leave requests :")
 	}
+	return leaves
 }
 
-func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) {
+// Function to GET APPROVED LEAVES
+func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) []*types.AcceptLeaveRequest {
 	store := ctx.KVStore(k.storekey)
-	var t types.AcceptLeaveRequest
+	var leaves []*types.AcceptLeaveRequest
 	itr := store.Iterator(types.AcceptLeavesKey, nil)
 	for ; itr.Valid(); itr.Next() {
-		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
+		var leave types.AcceptLeaveRequest
+		k.cdc.Unmarshal(itr.Value(), &leave)
+		leaves = append(leaves, &leave)
+		fmt.Println("List of all the approved leaves")
+
 	}
+	return leaves
 }

@@ -27,11 +27,12 @@ import (
 // NewTxCmd returns a root CLI command handler for all x/lms transaction commands.
 func GetQueryCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   types.ModuleName,
-		Short: "Querying commands for the LMS module",
-		// DisableFlagParsing:         true,
-		// SuggestionsMinimumDistance: 2,
-		RunE: client.ValidateCmd,
+		Use:                        types.ModuleName,
+		Short:                      "Query Commands",
+		Long:                       "Querying commands for the LMS module",
+		DisableFlagParsing:         true,
+		SuggestionsMinimumDistance: 2,
+		RunE:                       client.ValidateCmd,
 	}
 
 	cmd.AddCommand(
@@ -42,12 +43,13 @@ func GetQueryCmd() *cobra.Command {
 
 	return cmd
 }
+
+// Get leave command
 func GetLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "listallleaves",
-		Short: "List all the leaves",
-		Long: `List all the leaves which are accepted or rejected by the admin,
-		`,
+		Use:   "getleaves",
+		Short: "List all applied leaves",
+		Long:  `List all the leaves which are applied by the students disregard to the status`,
 		RunE: func(ctx *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(ctx)
 			if err != nil {
@@ -63,12 +65,12 @@ func GetLeavesCmd() *cobra.Command {
 	return cmd
 }
 
+// Get Students Command
 func GetStudentsCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "listallstudents",
+		Use:   "getstudents",
 		Short: "List all the students",
-		Long: `List all the students which are added by admin,
-		`,
+		Long:  `List all the students which are approved and added by the admin`,
 		RunE: func(ctx *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(ctx)
 			if err != nil {
@@ -84,12 +86,12 @@ func GetStudentsCmd() *cobra.Command {
 	return cmd
 }
 
+// Get Approved Leaves command
 func GetApprovedLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "listallstudents",
-		Short: "List all the students",
-		Long: `List all the students which are added by admin,
-		`,
+		Use:   "getapprovedleaves",
+		Short: "List all approved leaves by admin",
+		Long:  `List all the approved leaves which are verified by admin`,
 		RunE: func(ctx *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(ctx)
 			if err != nil {
@@ -108,7 +110,7 @@ func init() {
 	rootCmd.AddCommand(GetStudentsCmd())
 	rootCmd.AddCommand(GetLeavesCmd())
 	rootCmd.AddCommand(GetApprovedLeavesCmd())
-	// rootCmd.SuggestionsMinimumDistance = 3
+	rootCmd.SuggestionsMinimumDistance = 3
 
 	// Here you will define your flags and configuration settings.
 
