@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	"log"
 
 	"coslms/x/lms/types"
@@ -110,39 +111,37 @@ func (k Keeper) GetStudent(ctx sdk.Context, getstudents *types.GetStudentsReques
 		var t types.Student
 		k.cdc.Unmarshal(itr.Value(), &t)
 		students = append(students, &t)
+		fmt.Println("Details of the students are : ")
 
 	}
-	// panic(students)
 	return students
 }
 
-// Function to GET ADMIN
-// func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
-// 	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
-// 		panic(err)
-// 	}
-// 	store := ctx.KVStore(k.storekey)
-// 	return store.Get(types.AdminStoreKey(Address))
-// }
-
 // Function to GET LEAVES
-func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) types.ApplyLeaveRequest {
+func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, req *types.GetLeaveRequestsRequest) []*types.ApplyLeaveRequest {
 	store := ctx.KVStore(k.storekey)
-	var t types.ApplyLeaveRequest
+	var leaves []*types.ApplyLeaveRequest
 	itr := store.Iterator(types.ApplyLeavesKey, nil)
 	for ; itr.Valid(); itr.Next() {
-		k.cdc.Unmarshal(itr.Value(), &t)
+		var leave types.ApplyLeaveRequest
+		k.cdc.Unmarshal(itr.Value(), &leave)
+		leaves = append(leaves, &leave)
+		fmt.Println("List of all the applied leave requests :")
 	}
-	return t
+	return leaves
 }
 
 // Function to GET APPROVED LEAVES
-func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) types.AcceptLeaveRequest {
+func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) []*types.AcceptLeaveRequest {
 	store := ctx.KVStore(k.storekey)
-	var t types.AcceptLeaveRequest
+	var leaves []*types.AcceptLeaveRequest
 	itr := store.Iterator(types.AcceptLeavesKey, nil)
 	for ; itr.Valid(); itr.Next() {
-		k.cdc.Unmarshal(itr.Value(), &t)
+		var leave types.AcceptLeaveRequest
+		k.cdc.Unmarshal(itr.Value(), &leave)
+		leaves = append(leaves, &leave)
+		fmt.Println("List of all the approved leaves")
+
 	}
-	return t
+	return leaves
 }
