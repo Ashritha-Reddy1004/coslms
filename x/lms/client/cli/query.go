@@ -49,7 +49,7 @@ func GetLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "getleaves",
 		Short: "List all applied leaves",
-		Long:  ``,
+		Long:  `List of all the applied leaves by the students`,
 		RunE: func(ctx *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(ctx)
 			if err != nil {

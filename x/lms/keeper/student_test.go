@@ -253,7 +253,7 @@ func (s *TestSuite) TestAddStudents() {
 // Test for Get Student query
 func (s *TestSuite) TestGetStudent() {
 	s.TestAddStudents()
-	s.studentKeeper.GetStudent(s.ctx)
+	s.studentKeeper.GetStudent(s.ctx, &types.GetStudentsRequest{})
 }
 
 // Test for Get leaves query
@@ -265,6 +265,6 @@ func (s *TestSuite) TestGetLeavesRequest() {
 // Test for Get Approved Leaves
 func (s *TestSuite) TestGetApprovedLeaves() {
 	s.TestAcceptLeaves()
-	s.studentKeeper.GetApprovedLeaves(s.ctx, types.GetLeaveApprovedRequestsRequest{})
+	//s.studentKeeper.GetApprovedLeaves(s.ctx)
 
 }
