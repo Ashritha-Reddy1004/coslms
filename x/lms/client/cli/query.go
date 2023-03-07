@@ -79,6 +79,9 @@ func GetStudentsCmd() *cobra.Command {
 			queryClient := types.NewQueryClient(clientCtx)
 			params := &types.GetStudentsRequest{}
 			res, err := queryClient.GetStudents(ctx.Context(), params)
+			if err != nil {
+				return err
+			}
 			return clientCtx.PrintProto(res)
 		},
 	}

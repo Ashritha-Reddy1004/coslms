@@ -4,6 +4,7 @@ const (
 	ModuleName   = "coslms"
 	StoreKey     = ModuleName
 	QuerierRoute = ModuleName
+	RouterKey    = ModuleName
 )
 
 var (
@@ -12,6 +13,7 @@ var (
 	ApplyLeavesKey  = []byte{0x03}
 	AcceptLeavesKey = []byte{0x04}
 	sequenceKey     = []byte{0x05}
+	CounterKey      = []byte{0x06}
 )
 
 // key generation for admin store
@@ -47,5 +49,11 @@ func ApplyLeavesStoreKey(admin string, leaveID string) []byte {
 	copy(key[len(ApplyLeavesKey):], admin)
 	copy(key, sequenceKey)
 	copy(key[len(sequenceKey):], leaveID)
+	return key
+}
+func LeavesCounterKey(id string) []byte {
+	key := make([]byte, len(CounterKey)+len(id))
+	copy(key, CounterKey)
+	copy(key[len(CounterKey):], []byte(id))
 	return key
 }

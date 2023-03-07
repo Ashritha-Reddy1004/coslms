@@ -1,7 +1,9 @@
 package keeper
 
 import (
+	"fmt"
 	"log"
+	"strconv"
 
 	"coslms/x/lms/types"
 
@@ -22,8 +24,11 @@ func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequ
 				log.Fatal(err)
 			}
 			store.Set(types.StudentStoreKey(stud.Address), marshalAddStudents)
+			std := types.AddStudentRequest{}
+			k.cdc.Unmarshal(store.Get(types.StudentStoreKey(stud.Address)), &std)
+
 		}
-		return ""
+		return "Students Added Successfully"
 
 	}
 }
@@ -73,6 +78,19 @@ func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 		if err != nil {
 			panic(err)
 		}
+		address := types.LeavesCounterKey(applyleavereq.Address)
+		counter := store.Get(address)
+		if counter == nil {
+			store.Set(address, []byte("1"))
+		} else {
+			c, err := strconv.Atoi(string(counter))
+			if err != nil {
+				panic(err)
+			}
+			c = c + 1
+			store.Set(address, []byte(fmt.Sprint(c)))
+		}
+		counter = store.Get(address)
 		store.Set(types.ApplyLeavesStoreKey(applyleavereq.LeaveId, applyleavereq.Address), marshalApplyLeave)
 	}
 	return "Leave Applied Successfully"
@@ -101,12 +119,12 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 }
 
 // Function to GET STUDENT
-func (k Keeper) GetStudent(ctx sdk.Context, req *types.GetStudentsRequest) []*types.Student {
+func (k Keeper) GetStudent(ctx sdk.Context, req *types.GetStudentsRequest) []*types.AddStudentRequest {
 	store := ctx.KVStore(k.storekey)
-	var students []*types.Student
-	itr := store.Iterator(types.StudentKey, nil)
+	var students []*types.AddStudentRequest
+	itr := sdk.KVStorePrefixIterator(store, types.StudentKey)
 	for ; itr.Valid(); itr.Next() {
-		var t types.Student
+		var t types.AddStudentRequest
 		k.cdc.Unmarshal(itr.Value(), &t)
 		students = append(students, &t)
 

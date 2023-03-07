@@ -25,7 +25,7 @@ message GetStudentsRequest {
 }
 
 message GetStudentsResponse {
-    repeated Student students = 1;
+    repeated AddStudentRequest students = 1;
 }
 
 message GetLeaveRequestsRequest {

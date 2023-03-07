@@ -7,6 +7,13 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+const (
+	TypeRegisterAdmin = "register-admin"
+	TypeAddStudent    = "add-student"
+	TypeApplyLeave    = "apply-leave"
+	TypeAcceptLeave   = "accept-leave"
+)
+
 var (
 	_ sdk.Msg = &AddStudentRequest{}
 	_ sdk.Msg = &AcceptLeaveRequest{}
@@ -24,6 +31,14 @@ func NewAddStudentRequest(admin string, students []*Student) *AddStudentRequest 
 
 func (msg AddStudentRequest) GetSignBytes() []byte {
 	return []byte{}
+}
+func (msg AddStudentRequest) Route() string {
+	return RouterKey
+
+}
+
+func (msg AddStudentRequest) Type() string {
+	return TypeAddStudent
 }
 
 // GetSigners Implements Msg.
@@ -55,6 +70,13 @@ func NewAcceptLeaveRequest(admin string, leaveid string, status LeaveStatus) *Ac
 func (msg AcceptLeaveRequest) GetSignBytes() []byte {
 	return []byte{}
 }
+func (msg ApplyLeaveRequest) Route() string {
+	return RouterKey
+}
+
+func (msg ApplyLeaveRequest) Type() string {
+	return TypeAcceptLeave
+}
 
 // GetSigners Implements Msg.
 func (msg AcceptLeaveRequest) GetSigners() []sdk.AccAddress {
@@ -71,15 +93,21 @@ func (msg AcceptLeaveRequest) ValidateBasic() error {
 }
 
 // ----------------------------APPLY LEAVE REQUESTS-----------------------------------------------------------------------------
-func NewApplyLeaveRequest(admin string, address string, reason string, leaveid string, from *time.Time, to *time.Time) *ApplyLeaveRequest {
+func NewApplyLeaveRequest(address string, reason string, from *time.Time, to *time.Time, leaveid string) *ApplyLeaveRequest {
 	return &ApplyLeaveRequest{
-		Admin:   admin,
 		Address: address,
 		Reason:  reason,
 		From:    from,
 		To:      to,
 		LeaveId: leaveid,
 	}
+}
+func (msg AcceptLeaveRequest) Route() string {
+	return RouterKey
+}
+
+func (msg AcceptLeaveRequest) Type() string {
+	return TypeApplyLeave
 }
 
 func (msg ApplyLeaveRequest) GetSignBytes() []byte {
@@ -108,6 +136,12 @@ func NewRegisterAdminRequest(address sdk.AccAddress, name string) *RegisterAdmin
 	}
 }
 
+func (msg RegisterAdminRequest) Route() string {
+	return RouterKey
+}
+func (msg RegisterAdminRequest) Type() string {
+	return TypeRegisterAdmin
+}
 func (msg RegisterAdminRequest) GetSignBytes() []byte {
 	return []byte{}
 }
