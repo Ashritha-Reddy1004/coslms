@@ -96,10 +96,11 @@ func AddStudentCmd() *cobra.Command {
 // To register admin
 func RegisterAdminCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "register-admin [name] [address]",
-		Short: "Register Admin",
-		Long:  `To Register Admin`,
-		Args:  cobra.ExactArgs(2),
+		Use:     "register-admin [name] [address]",
+		Short:   "Register Admin",
+		Long:    `To Register Admin`,
+		Args:    cobra.ExactArgs(2),
+		Example: "./simd tx coslms register-admin [name] [address] --from [val_name] --chain-id testnet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -120,10 +121,11 @@ func RegisterAdminCmd() *cobra.Command {
 // To apply leave by the student
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "apply-leave [addres] [reason] [leaveid] [from] [to]",
-		Short: "Apply Leave",
-		Long:  `Leave applied by the student which has to be approved by the admin`,
-		Args:  cobra.ExactArgs(5),
+		Use:     "apply-leave [addres] [reason] [leaveid] [from] [to]",
+		Short:   "Apply Leave",
+		Long:    `Leave applied by the student which has to be approved by the admin`,
+		Args:    cobra.ExactArgs(5),
+		Example: "./simd tx coslms apply-leave [addres] [reason] [leaveid] [from] [to] --from [val_name] --chain-id testnet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			//fromadd := clientCtx.GetFromAddress()
@@ -149,10 +151,11 @@ func ApplyLeaveCmd() *cobra.Command {
 // To accept leave
 func AcceptLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "accept-leave [admin] [leaveid] [status]",
-		Short: "Accept Leave",
-		Long:  `This is done by the admin to accept or reject leave which are submitted by the student`,
-		Args:  cobra.ExactArgs(3),
+		Use:     "accept-leave [admin] [leaveid] [status]",
+		Short:   "Accept Leave",
+		Long:    `This is done by the admin to accept or reject leave which are submitted by the student`,
+		Args:    cobra.ExactArgs(3),
+		Example: "./simd tx coslms accept-leave[admin] [leaveid] [status] --from [val_name] --chain-id testnet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
