@@ -121,7 +121,7 @@ func RegisterAdminCmd() *cobra.Command {
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "apply-leave [addres] [reason] [leaveid] [from] [to]",
-		Short: "Apply leave",
+		Short: "Apply Leave",
 		Long:  `Leave applied by the student which has to be approved by the admin`,
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) error {

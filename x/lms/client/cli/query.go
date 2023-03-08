@@ -39,6 +39,10 @@ func GetQueryCmd() *cobra.Command {
 		GetLeavesCmd(),
 		GetStudentsCmd(),
 		GetApprovedLeavesCmd(),
+		GetStudentCmd(),
+		GetAdminCmd(),
+		GetAdminsCmd(),
+		GetLeaveStatusCmd(),
 	)
 
 	return cmd
@@ -47,7 +51,7 @@ func GetQueryCmd() *cobra.Command {
 // Get leave command
 func GetLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "getleaves",
+		Use:   "accepted-leaves",
 		Short: "List all applied leaves",
 		Long:  `List of all the applied leaves by the students`,
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -68,7 +72,7 @@ func GetLeavesCmd() *cobra.Command {
 // Get Students Command
 func GetStudentsCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "getstudents",
+		Use:   "students",
 		Short: "List all the students",
 		Long:  `List all the students which are added by`,
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -92,7 +96,7 @@ func GetStudentsCmd() *cobra.Command {
 // Get Approved Leaves command
 func GetApprovedLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "getapprovedleaves",
+		Use:   "approved-leaves",
 		Short: "List all approved leaves by admin",
 		Long:  `List all the approved leaves which are verified by admin`,
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -109,10 +113,20 @@ func GetApprovedLeavesCmd() *cobra.Command {
 	flags.AddQueryFlagsToCmd(cmd)
 	return cmd
 }
+//Get Student Command
+func GetStudentCmd()*cobra.Command{
+	cmd:=&cobra.Command{
+		Use
+	}
+}
 func init() {
 	rootCmd.AddCommand(GetStudentsCmd())
 	rootCmd.AddCommand(GetLeavesCmd())
 	rootCmd.AddCommand(GetApprovedLeavesCmd())
+	rootCmd.AddCommand(GetStudentCmd())
+	rootCmd.AddCommand(GetAdmins())
+	rootCmd.AddCommand(GetLeaveStatusCmd())
+	rootCmd.AddCommand(GetAdmin())
 	rootCmd.SuggestionsMinimumDistance = 3
 
 	// Here you will define your flags and configuration settings.
