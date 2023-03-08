@@ -253,7 +253,7 @@ func (s *TestSuite) TestAddStudents() {
 // Test for Get Student query
 func (s *TestSuite) TestGetStudent() {
 	s.TestAddStudents()
-	s.studentKeeper.GetStudent(s.ctx, &types.GetStudentsRequest{})
+	s.studentKeeper.GetStudentsQuery(s.ctx, &types.GetStudentsRequest{})
 }
 
 // Test for Get leaves query

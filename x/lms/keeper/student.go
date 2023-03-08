@@ -118,11 +118,11 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 	return "Leave Accepted"
 }
 
-// Function to GET STUDENT
-func (k Keeper) GetStudent(ctx sdk.Context, req *types.GetStudentsRequest) []*types.AddStudentRequest {
+// Function to GET STUDENTS
+func (k Keeper) GetStudentsQuery(ctx sdk.Context, req *types.GetStudentsRequest) []*types.AddStudentRequest {
 	store := ctx.KVStore(k.storekey)
 	var students []*types.AddStudentRequest
-	itr := sdk.KVStorePrefixIterator(store, types.StudentKey)
+	itr := store.Iterator(types.StudentKey, nil)
 	for ; itr.Valid(); itr.Next() {
 		var t types.AddStudentRequest
 		k.cdc.Unmarshal(itr.Value(), &t)
@@ -133,13 +133,18 @@ func (k Keeper) GetStudent(ctx sdk.Context, req *types.GetStudentsRequest) []*ty
 }
 
 // Function to GET ADMIN
-// func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
-// 	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
-// 		panic(err)
-// 	}
-// 	store := ctx.KVStore(k.storekey)
-// 	return store.Get(types.AdminStoreKey(Address))
-// }
+func (k Keeper) GetAdminQuery(ctx sdk.Context, Address string) (req *types.RegisterAdminRequest, err error) {
+	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
+		panic(err)
+	}
+	store := ctx.KVStore(k.storekey)
+	admin := store.Get(types.AdminStoreKey(Address))
+	if admin == nil {
+		panic("Admin not found")
+	}
+	k.cdc.MustUnmarshal(admin, req)
+	return req, err
+}
 
 // Function to GET LEAVES
 func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, req *types.GetLeaveRequestsRequest) []*types.ApplyLeaveRequest {
@@ -165,4 +170,44 @@ func (k Keeper) GetApprovedLeaves(ctx sdk.Context, req *types.GetLeaveApprovedRe
 		leaves = append(leaves, &leave)
 	}
 	return leaves
+}
+
+// Function to GET STUDENT
+func (k Keeper) GetStudentQuery(ctx sdk.Context, address string) (req *types.AddStudentRequest, err error) {
+	store := ctx.KVStore(k.storekey)
+	student := store.Get(types.StudentStoreKey(address))
+	fmt.Println(student)
+	if student == nil {
+		panic("Student not found")
+	}
+	fmt.Println(student)
+	k.cdc.MustUnmarshal(student, req)
+	return req, err
+}
+
+// Function to GET LEAVE STATUS
+func (k Keeper) GetLeaveStatusQuery(ctx sdk.Context, admin string, LeaveId string) (req *types.GetLeaveStatusResponse, err error) {
+	store := ctx.KVStore(k.storekey)
+	leave := store.Get(types.AcceptLeavesStoreKey(admin, LeaveId))
+	if leave == nil {
+		panic("Leave with mentioned Id is not found")
+
+	}
+	k.cdc.MustUnmarshal(leave, req)
+	return req, err
+}
+
+// Function to GET ADMINS
+func (k Keeper) GetAdminsQuery(ctx sdk.Context, req *types.GetAdminsRequest) []*types.RegisterAdminRequest {
+	store := ctx.KVStore(k.storekey)
+	var admins []*types.RegisterAdminRequest
+	itr := store.Iterator(types.AdminKey, nil)
+	for ; itr.Valid(); itr.Next() {
+		var t types.RegisterAdminRequest
+		k.cdc.Unmarshal(itr.Value(), &t)
+		admins = append(admins, &t)
+
+	}
+	return admins
+
 }
