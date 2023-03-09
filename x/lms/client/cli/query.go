@@ -52,7 +52,7 @@ func GetQueryCmd() *cobra.Command {
 func GetLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "applied-leaves",
-		Short:   "Applied Leaves",
+		Short:   "To get applied leaves",
 		Long:    `List of all the applied leaves by the students`,
 		Example: "./simd query coslms applied-leaves",
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -77,7 +77,7 @@ func GetLeavesCmd() *cobra.Command {
 func GetStudentsCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "students",
-		Short:   "Students",
+		Short:   "To get students",
 		Long:    `List all the students which are added by`,
 		Example: "./simd query coslms students",
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -102,7 +102,7 @@ func GetStudentsCmd() *cobra.Command {
 func GetApprovedLeavesCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "approved-leaves",
-		Short:   "Approved Leaves",
+		Short:   "To get approved leaves",
 		Long:    `List all the approved leaves which are verified by admin`,
 		Example: "./simd query coslms approved-leaves",
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -127,7 +127,7 @@ func GetApprovedLeavesCmd() *cobra.Command {
 func GetStudentCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "student  [address]",
-		Short:   "Student",
+		Short:   "To get individual student details",
 		Long:    `Lists the student details based on the address input`,
 		Example: "./simd query coslms student [address]",
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -154,7 +154,7 @@ func GetStudentCmd() *cobra.Command {
 func GetAdminCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "admin [address]",
-		Short:   "Admin",
+		Short:   "To get admin details based on address",
 		Long:    `Lists the admin based on the address provided`,
 		Example: "./simd query coslms admin [address]",
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -181,7 +181,7 @@ func GetAdminCmd() *cobra.Command {
 func GetAdminsCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "admins",
-		Short:   "Admins",
+		Short:   "To list all the admins",
 		Long:    `List all the registered admins`,
 		Example: "./simd query coslms admins",
 		RunE: func(ctx *cobra.Command, args []string) error {
@@ -204,7 +204,7 @@ func GetAdminsCmd() *cobra.Command {
 func GetLeaveStatusCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "leave-status [address] [leaveid]",
-		Short:   "Leave Status",
+		Short:   "To get the status of the applied leave",
 		Long:    `Get the leave status once the id and admin are passed`,
 		Example: "./simd query coslms leave-status [admin] [leaveid]",
 		RunE: func(ctx *cobra.Command, args []string) error {
