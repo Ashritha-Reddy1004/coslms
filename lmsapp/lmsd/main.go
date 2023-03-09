@@ -12,7 +12,7 @@ import (
 
 	// "github.com/cosmos/cosmos-sdk/simapp/simd/cmd"
 	// "lms-cosmos/lmsapp/simd/cmd"
-	"coslms/lmsapp/simd/cmd"
+	"coslms/lmsapp/lmsd/cmd"
 )
 
 func main() {
