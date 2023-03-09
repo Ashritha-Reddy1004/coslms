@@ -83,13 +83,13 @@ func GetStudentsCmd() *cobra.Command {
 		RunE: func(ctx *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientQueryContext(ctx)
 			if err != nil {
-				return err
+				panic(err)
 			}
 			queryClient := types.NewQueryClient(clientCtx)
 			params := &types.GetStudentsRequest{}
 			res, err := queryClient.GetStudents(ctx.Context(), params)
 			if err != nil {
-				return err
+				panic(err)
 			}
 			return clientCtx.PrintProto(res)
 		},
@@ -227,23 +227,24 @@ func GetLeaveStatusCmd() *cobra.Command {
 	flags.AddQueryFlagsToCmd(cmd)
 	return cmd
 }
-func init() {
-	rootCmd.AddCommand(GetStudentsCmd())
-	rootCmd.AddCommand(GetLeavesCmd())
-	rootCmd.AddCommand(GetApprovedLeavesCmd())
-	rootCmd.AddCommand(GetStudentCmd())
-	rootCmd.AddCommand(GetAdminsCmd())
-	rootCmd.AddCommand(GetLeaveStatusCmd())
-	rootCmd.AddCommand(GetAdminCmd())
-	rootCmd.SuggestionsMinimumDistance = 3
 
-	// Here you will define your flags and configuration settings.
+// func init() {
+// 	rootCmd.AddCommand(GetStudentsCmd())
+// 	rootCmd.AddCommand(GetLeavesCmd())
+// 	rootCmd.AddCommand(GetApprovedLeavesCmd())
+// 	rootCmd.AddCommand(GetStudentCmd())
+// 	rootCmd.AddCommand(GetAdminsCmd())
+// 	rootCmd.AddCommand(GetLeaveStatusCmd())
+// 	rootCmd.AddCommand(GetAdminCmd())
+// 	rootCmd.SuggestionsMinimumDistance = 3
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// getuserCmd.PersistentFlags().String("email", "", "User email")
+// 	// Here you will define your flags and configuration settings.
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// getuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
+// 	// Cobra supports Persistent Flags which will work for this command
+// 	// and all subcommands, e.g.:
+// 	// getuserCmd.PersistentFlags().String("email", "", "User email")
+
+// 	// Cobra supports local flags which will only run when this command
+// 	// is called directly, e.g.:
+// 	// getuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+// }

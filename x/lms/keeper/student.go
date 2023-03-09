@@ -119,12 +119,12 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 }
 
 // Function to GET STUDENTS
-func (k Keeper) GetStudentsQuery(ctx sdk.Context, req *types.GetStudentsRequest) []*types.AddStudentRequest {
+func (k Keeper) GetStudentsQuery(ctx sdk.Context, req *types.GetStudentsRequest) []*types.Student {
 	store := ctx.KVStore(k.storekey)
-	var students []*types.AddStudentRequest
+	var students []*types.Student
 	itr := store.Iterator(types.StudentKey, nil)
 	for ; itr.Valid(); itr.Next() {
-		var t types.AddStudentRequest
+		var t types.Student
 		k.cdc.Unmarshal(itr.Value(), &t)
 		students = append(students, &t)
 
@@ -133,8 +133,10 @@ func (k Keeper) GetStudentsQuery(ctx sdk.Context, req *types.GetStudentsRequest)
 }
 
 // Function to GET ADMIN
-func (k Keeper) GetAdminQuery(ctx sdk.Context, Address string) (req *types.RegisterAdminRequest, err error) {
+func (k Keeper) GetAdminQuery(ctx sdk.Context, Address string) (*types.RegisterAdminRequest, error) {
+
 	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
+
 		panic(err)
 	}
 	store := ctx.KVStore(k.storekey)
@@ -142,8 +144,9 @@ func (k Keeper) GetAdminQuery(ctx sdk.Context, Address string) (req *types.Regis
 	if admin == nil {
 		panic("Admin not found")
 	}
-	k.cdc.MustUnmarshal(admin, req)
-	return req, err
+	var res types.RegisterAdminRequest
+	k.cdc.Unmarshal(admin, &res)
+	return &res, nil
 }
 
 // Function to GET LEAVES
@@ -173,16 +176,15 @@ func (k Keeper) GetApprovedLeaves(ctx sdk.Context, req *types.GetLeaveApprovedRe
 }
 
 // Function to GET STUDENT
-func (k Keeper) GetStudentQuery(ctx sdk.Context, address string) (req *types.AddStudentRequest, err error) {
+func (k Keeper) GetStudentQuery(ctx sdk.Context, address string) (*types.Student, error) {
 	store := ctx.KVStore(k.storekey)
 	student := store.Get(types.StudentStoreKey(address))
-	fmt.Println(student)
 	if student == nil {
 		panic("Student not found")
 	}
-	fmt.Println(student)
-	k.cdc.MustUnmarshal(student, req)
-	return req, err
+	var res types.Student
+	k.cdc.MustUnmarshal(student, &res)
+	return &res, nil
 }
 
 // Function to GET LEAVE STATUS

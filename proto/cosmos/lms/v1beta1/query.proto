@@ -37,7 +37,7 @@ message GetStudentsRequest {
 }
 
 message GetStudentsResponse {
-    repeated AddStudentRequest students = 1;
+    repeated Student students = 1;
 }
 
 message GetAdminRequest{
@@ -66,7 +66,7 @@ message GetStudentRequest{
 
 }
 message GetStudentResponse{
-    AddStudentRequest student=1;
+    Student student=1;
 }
 message GetAdminsRequest{
     

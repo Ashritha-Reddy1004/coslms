@@ -180,19 +180,20 @@ func AcceptLeaveCmd() *cobra.Command {
 	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
-func init() {
-	rootCmd.AddCommand(AddStudentCmd())
-	rootCmd.AddCommand(RegisterAdminCmd())
-	rootCmd.AddCommand(ApplyLeaveCmd())
-	rootCmd.AddCommand(AcceptLeaveCmd())
 
-	// Here you will define your flags and configuration settings.
+// func init() {
+// 	rootCmd.AddCommand(AddStudentCmd())
+// 	rootCmd.AddCommand(RegisterAdminCmd())
+// 	rootCmd.AddCommand(ApplyLeaveCmd())
+// 	rootCmd.AddCommand(AcceptLeaveCmd())
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// txCmd.PersistentFlags().String("foo", "", "A help for foo")
+// 	// Here you will define your flags and configuration settings.
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// txCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
+// 	// Cobra supports Persistent Flags which will work for this command
+// 	// and all subcommands, e.g.:
+// 	// txCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+// 	// Cobra supports local flags which will only run when this command
+// 	// is called directly, e.g.:
+// 	// txCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+// }

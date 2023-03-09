@@ -52,6 +52,7 @@ func (k Keeper) GetStudent(goCtx context.Context, req *types.GetStudentRequest) 
 
 // Function to get admin
 func (k Keeper) GetAdmin(goctx context.Context, req *types.GetAdminRequest) (*types.GetAdminResponse, error) {
+
 	ctx := sdk.UnwrapSDKContext(goctx)
 	res, _ := k.GetAdminQuery(ctx, req.Address)
 	result := types.GetAdminResponse{
