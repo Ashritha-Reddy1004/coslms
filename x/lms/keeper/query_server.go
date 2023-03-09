@@ -23,11 +23,10 @@ func (k Keeper) GetStudents(goCtx context.Context, req *types.GetStudentsRequest
 // Method to get applied leaves
 func (k Keeper) GetLeaveRequests(goCtx context.Context, req *types.GetLeaveRequestsRequest) (*types.GetLeaveRequestsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
 	res := k.GetLeaveRequestsQuery(ctx, req)
-	result := types.GetLeaveRequestsResponse{
-		Leaverequests: res,
-	}
-	return &result, nil
+
+	return res, nil
 }
 
 // Method to get approved leaves

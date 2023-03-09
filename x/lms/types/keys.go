@@ -43,10 +43,10 @@ func AcceptLeavesStoreKey(admin string, leaveID string) []byte {
 }
 
 // key generation for apply leaves store
-func ApplyLeavesStoreKey(admin string, leaveID string) []byte {
-	key := make([]byte, len(ApplyLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
+func ApplyLeavesStoreKey(student string, leaveID string) []byte {
+	key := make([]byte, len(ApplyLeavesKey)+len(student)+len(sequenceKey)+len(leaveID))
 	copy(key, ApplyLeavesKey)
-	copy(key[len(ApplyLeavesKey):], admin)
+	copy(key[len(ApplyLeavesKey):], student)
 	copy(key, sequenceKey)
 	copy(key[len(sequenceKey):], leaveID)
 	return key

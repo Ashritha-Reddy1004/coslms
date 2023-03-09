@@ -151,7 +151,7 @@ func ApplyLeaveCmd() *cobra.Command {
 // To accept leave
 func AcceptLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "accept-leave [admin] [leaveid] [status]",
+		Use:     "accept-leave [address] [leaveid] [status]",
 		Short:   "Accept Leave",
 		Long:    `This is done by the admin to accept or reject leave which are submitted by the student`,
 		Args:    cobra.ExactArgs(3),
@@ -161,16 +161,17 @@ func AcceptLeaveCmd() *cobra.Command {
 			if err != nil {
 				panic(err)
 			}
-			admin := args[0]
+			admin := clientCtx.GetFromAddress().String()
+			address := args[0]
 			leaveid := args[1]
 			status := args[2]
 			var msgClient *types.AcceptLeaveRequest
 			if status == "2" {
-				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_REJECTED)
+				msgClient = types.NewAcceptLeaveRequest(admin, address, leaveid, types.LeaveStatus_STATUS_REJECTED)
 			} else if status == "1" {
-				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_ACCEPTED)
+				msgClient = types.NewAcceptLeaveRequest(admin, address, leaveid, types.LeaveStatus_STATUS_ACCEPTED)
 			} else {
-				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_UNDEFINED)
+				msgClient = types.NewAcceptLeaveRequest(admin, address, leaveid, types.LeaveStatus_STATUS_UNDEFINED)
 
 			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)

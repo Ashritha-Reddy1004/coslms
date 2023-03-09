@@ -90,8 +90,8 @@ func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 			c = c + 1
 			store.Set(address, []byte(fmt.Sprint(c)))
 		}
-		counter = store.Get(address)
-		store.Set(types.ApplyLeavesStoreKey(applyleavereq.LeaveId, applyleavereq.Address), marshalApplyLeave)
+		//counter = store.Get(address)
+		store.Set(types.ApplyLeavesStoreKey(applyleavereq.Address, applyleavereq.LeaveId), marshalApplyLeave)
 	}
 	return "Leave Applied Successfully"
 }
@@ -113,7 +113,7 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 		if err != nil {
 			panic(err)
 		}
-		store.Set(types.AcceptLeavesStoreKey(acceptleavereq.Admin, acceptleavereq.LeaveId), marshalAcceptLeave)
+		store.Set(types.AcceptLeavesStoreKey(acceptleavereq.Address, acceptleavereq.LeaveId), marshalAcceptLeave)
 	}
 	return "Leave Accepted"
 }
@@ -150,16 +150,20 @@ func (k Keeper) GetAdminQuery(ctx sdk.Context, Address string) (*types.RegisterA
 }
 
 // Function to GET LEAVES
-func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, req *types.GetLeaveRequestsRequest) []*types.ApplyLeaveRequest {
+func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, req *types.GetLeaveRequestsRequest) *types.GetLeaveRequestsResponse {
 	store := ctx.KVStore(k.storekey)
+	//var response *types.GetLeaveRequestsResponse
 	var leaves []*types.ApplyLeaveRequest
 	itr := store.Iterator(types.ApplyLeavesKey, nil)
+
 	for ; itr.Valid(); itr.Next() {
 		var leave types.ApplyLeaveRequest
 		k.cdc.Unmarshal(itr.Value(), &leave)
 		leaves = append(leaves, &leave)
 	}
-	return leaves
+	return &types.GetLeaveRequestsResponse{
+		Leaverequests: leaves,
+	}
 }
 
 // Function to GET APPROVED LEAVES
@@ -195,7 +199,7 @@ func (k Keeper) GetLeaveStatusQuery(ctx sdk.Context, admin string, LeaveId strin
 		panic("Leave with mentioned Id is not found")
 
 	}
-	k.cdc.MustUnmarshal(leave, req)
+	k.cdc.Unmarshal(leave, req)
 	return req, err
 }
 

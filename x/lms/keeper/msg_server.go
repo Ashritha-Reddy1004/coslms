@@ -10,10 +10,10 @@ import (
 
 var _ types.MsgServer = Keeper{}
 
-type msgServer struct {
-	Keeper
-	types.UnimplementedMsgServer
-}
+// type msgServer struct {
+// 	Keeper
+// 	types.UnimplementedMsgServer
+// }
 
 // func NewMsgServerImpl(k Keeper) types.MsgServer {
 // 	return &msgServer{

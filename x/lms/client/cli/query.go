@@ -203,7 +203,7 @@ func GetAdminsCmd() *cobra.Command {
 }
 func GetLeaveStatusCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "leave-status [admin] [leaveid]",
+		Use:     "leave-status [address] [leaveid]",
 		Short:   "Leave Status",
 		Long:    `Get the leave status once the id and admin are passed`,
 		Example: "./simd query coslms leave-status [admin] [leaveid]",
@@ -216,7 +216,9 @@ func GetLeaveStatusCmd() *cobra.Command {
 				Admin:   args[0],
 				LeaveId: args[1],
 			}
+
 			queryClient := types.NewQueryClient(clientCtx)
+
 			res, err := queryClient.GetLeaveStatus(ctx.Context(), &status)
 			if err != nil {
 				return err
@@ -248,3 +250,5 @@ func GetLeaveStatusCmd() *cobra.Command {
 // 	// is called directly, e.g.:
 // 	// getuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 // }
+
+// leaveskey | leaveid | student | sequence |  - leaves

@@ -59,9 +59,10 @@ func (msg AddStudentRequest) ValidateBasic() error {
 }
 
 // --------------------------------------------ACCEPT LEAVE REQUEST-----------------------------------------------------
-func NewAcceptLeaveRequest(admin string, leaveid string, status LeaveStatus) *AcceptLeaveRequest {
+func NewAcceptLeaveRequest(admin string, student string, leaveid string, status LeaveStatus) *AcceptLeaveRequest {
 	return &AcceptLeaveRequest{
 		Admin:   admin,
+		Address: student,
 		LeaveId: leaveid,
 		Status:  status,
 	}
