@@ -12,27 +12,27 @@
 
 **To generate lms module commands**
 
-    $ ./build/simd tx coslms
+    $ ./build/lmsd tx coslms
 
 **To  generate transaction sub-commands**
    
-    $ ./build/simd tx
+    $ ./build/lmsd tx
 
 **To generate query sub-commands**
-    $ ./build/simd query
+    $ ./build/lmsd query
 
 **To execute transaction commands**
     
-    $ simd tx [command]
+    $ lmsd tx [command]
 
 **To execute query commands**
    
-    $ simd query [command]
+    $ lmsd query [command]
 
 **To know more about transaction commands**
    
-    $ simd tx [command] --help
+    $ lmsd tx [command] --help
 
 **To know more about query commands**
    
-    $ simd query [command] --help
+    $ lmsd query [command] --help
