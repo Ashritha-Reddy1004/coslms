@@ -10,6 +10,40 @@
 
     $ make build
 
+**To add keys**
+
+    $ ./lmsd keys add [key_name]
+
+**To list all keys**
+
+    $ ./lmsd keys list
+
+**Initialize the testnet with chain-id and some validator name**
+
+This will create the configurations required for the testnet in daemon home directory.
+
+    $ ./lmsd init --chain-id testnet myvalidator
+
+**Add some genesis accounts and tokens.**
+
+ We can do this via keyname (if the exists on your local machine) or with address
+
+    $ ./lmsd add-genesis-account validator-key 1000000000stake
+    $ ./lmsd add-genesis-account $(./simd keys show mykey1 -a) 10000000000stake
+
+
+**Create gentx (create validator genesis transaction)**
+
+    $ ./lmsd gentx validator-key --chain-id testnet
+
+**Collect gentxs**
+
+    $ ./lmsd collect-gentxs
+
+**Start the node**
+
+    $ ./lmsd start
+
 **To generate lms module commands**
 
     $ ./build/lmsd tx coslms
