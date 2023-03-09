@@ -230,16 +230,6 @@ func GetLeaveStatusCmd() *cobra.Command {
 	return cmd
 }
 
-// func init() {
-// 	rootCmd.AddCommand(GetStudentsCmd())
-// 	rootCmd.AddCommand(GetLeavesCmd())
-// 	rootCmd.AddCommand(GetApprovedLeavesCmd())
-// 	rootCmd.AddCommand(GetStudentCmd())
-// 	rootCmd.AddCommand(GetAdminsCmd())
-// 	rootCmd.AddCommand(GetLeaveStatusCmd())
-// 	rootCmd.AddCommand(GetAdminCmd())
-// 	rootCmd.SuggestionsMinimumDistance = 3
-
 // 	// Here you will define your flags and configuration settings.
 
 // 	// Cobra supports Persistent Flags which will work for this command

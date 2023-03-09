@@ -97,8 +97,8 @@ func AddStudentCmd() *cobra.Command {
 func RegisterAdminCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "register-admin [name] [address]",
-		Short:   "Register Admin",
-		Long:    `To Register Admin`,
+		Short:   "To register admin",
+		Long:    `To register admin who can have access in adding and appending students and leaves`,
 		Args:    cobra.ExactArgs(2),
 		Example: "./simd tx coslms register-admin [name] [address] --from [val_name] --chain-id testnet",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -122,7 +122,7 @@ func RegisterAdminCmd() *cobra.Command {
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "apply-leave [addres] [reason] [leaveid] [from] [to]",
-		Short:   "Apply Leave",
+		Short:   "To apply leave",
 		Long:    `Leave applied by the student which has to be approved by the admin`,
 		Args:    cobra.ExactArgs(5),
 		Example: "./simd tx coslms apply-leave [addres] [reason] [leaveid] [from] [to] --from [val_name] --chain-id testnet",
@@ -152,7 +152,7 @@ func ApplyLeaveCmd() *cobra.Command {
 func AcceptLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "accept-leave [address] [leaveid] [status]",
-		Short:   "Accept Leave",
+		Short:   "To accept leave",
 		Long:    `This is done by the admin to accept or reject leave which are submitted by the student`,
 		Args:    cobra.ExactArgs(3),
 		Example: "./simd tx coslms accept-leave[admin] [leaveid] [status] --from [val_name] --chain-id testnet",
@@ -181,12 +181,6 @@ func AcceptLeaveCmd() *cobra.Command {
 	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
-
-// func init() {
-// 	rootCmd.AddCommand(AddStudentCmd())
-// 	rootCmd.AddCommand(RegisterAdminCmd())
-// 	rootCmd.AddCommand(ApplyLeaveCmd())
-// 	rootCmd.AddCommand(AcceptLeaveCmd())
 
 // 	// Here you will define your flags and configuration settings.
 
