@@ -4,6 +4,7 @@ const (
 	ModuleName   = "coslms"
 	StoreKey     = ModuleName
 	QuerierRoute = ModuleName
+	RouterKey    = ModuleName
 )
 
 var (
@@ -12,8 +13,10 @@ var (
 	ApplyLeavesKey  = []byte{0x03}
 	AcceptLeavesKey = []byte{0x04}
 	sequenceKey     = []byte{0x05}
+	CounterKey      = []byte{0x06}
 )
 
+// key generation for admin store
 func AdminStoreKey(address string) []byte {
 	key := make([]byte, len(AdminKey)+len(address))
 	copy(key, AdminKey)
@@ -21,6 +24,7 @@ func AdminStoreKey(address string) []byte {
 	return key
 }
 
+// key generation for student store
 func StudentStoreKey(studentID string) []byte {
 	key := make([]byte, len(StudentKey)+len(studentID))
 	copy(key, StudentKey)
@@ -28,6 +32,7 @@ func StudentStoreKey(studentID string) []byte {
 	return key
 }
 
+// key generation for accept leaves store
 func AcceptLeavesStoreKey(admin string, leaveID string) []byte {
 	key := make([]byte, len(AcceptLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
 	copy(key, AcceptLeavesKey)
@@ -36,11 +41,19 @@ func AcceptLeavesStoreKey(admin string, leaveID string) []byte {
 	copy(key[len(sequenceKey):], leaveID)
 	return key
 }
-func ApplyLeavesStoreKey(admin string, leaveID string) []byte {
-	key := make([]byte, len(ApplyLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
+
+// key generation for apply leaves store
+func ApplyLeavesStoreKey(student string, leaveID string) []byte {
+	key := make([]byte, len(ApplyLeavesKey)+len(student)+len(sequenceKey)+len(leaveID))
 	copy(key, ApplyLeavesKey)
-	copy(key[len(ApplyLeavesKey):], admin)
+	copy(key[len(ApplyLeavesKey):], student)
 	copy(key, sequenceKey)
 	copy(key[len(sequenceKey):], leaveID)
+	return key
+}
+func LeavesCounterKey(id string) []byte {
+	key := make([]byte, len(CounterKey)+len(id))
+	copy(key, CounterKey)
+	copy(key[len(CounterKey):], []byte(id))
 	return key
 }

@@ -21,17 +21,21 @@ import (
 	"coslms/x/lms/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
 )
 
 // txCmd represents the tx command
 func GetTxCmd() *cobra.Command {
 	studentTxCmd := &cobra.Command{
-		Use:   types.ModuleName,
-		Short: "|lms|",
-		Long:  `lms module commands`,
-		RunE:  client.ValidateCmd,
+		Use:                        types.ModuleName,
+		DisableFlagParsing:         false,
+		SuggestionsMinimumDistance: 4,
+		Short:                      "leave management system",
+		Long:                       `lms module commands`,
+		RunE:                       client.ValidateCmd,
 	}
 	studentTxCmd.AddCommand(
 		RegisterAdminCmd(),
@@ -52,17 +56,21 @@ func GetTxCmd() *cobra.Command {
 	// 		fmt.Println("tx called")
 
 }
+
+// To add and approve students
 func AddStudentCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Adding User",
-		Short: "",
-		Long:  "",
+		Use:   "add-student [address] [name] [id]",
+		Short: "Add Student",
+		Long:  `Function to add student`,
+		//Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
+			fromadd := clientCtx.GetFromAddress()
 			if err != nil {
 				panic(err)
 			}
-			admin := args[0]
+			admin := fromadd
 			students := []*types.Student{}
 
 			for i := 0; i < (len(args)-1)/3; i++ {
@@ -76,93 +84,111 @@ func AddStudentCmd() *cobra.Command {
 
 			}
 
-			msgClient := types.NewAddStudentRequest(admin, students)
+			msgClient := types.NewAddStudentRequest(admin.String(), students)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 
+// To register admin
 func RegisterAdminCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Admin Registration",
-		Short: "",
-		Long:  "",
+		Use:     "register-admin [name] [address]",
+		Short:   "To register admin",
+		Long:    `To register admin who can have access in adding and appending students and leaves`,
+		Args:    cobra.ExactArgs(2),
+		Example: "./simd tx coslms register-admin [name] [address] --from [val_name] --chain-id testnet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				panic(err)
 			}
-			address := args[0]
-			name := args[1]
+			address, _ := sdk.AccAddressFromBech32(args[1])
+			name := args[0]
 			msgClient := types.NewRegisterAdminRequest(address, name)
+			// panic("calll 1")
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
 
+// To apply leave by the student
 func ApplyLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Leave Application",
-		Short: "",
-		Long:  "",
+		Use:     "apply-leave [addres] [reason] [leaveid] [from] [to]",
+		Short:   "To apply leave",
+		Long:    `Leave applied by the student which has to be approved by the admin`,
+		Args:    cobra.ExactArgs(5),
+		Example: "./simd tx coslms apply-leave [addres] [reason] [leaveid] [from] [to] --from [val_name] --chain-id testnet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
+			//fromadd := clientCtx.GetFromAddress()
 			if err != nil {
 				panic(err)
 			}
 			var format string = "2006-Jan-06"
-			fromDate, _ := time.Parse(format, args[3])
-			toDate, _ := time.Parse(format, args[4])
+			fromDate, _ := time.Parse(format, args[2])
+			toDate, _ := time.Parse(format, args[3])
 			address := args[0]
 			reason := args[1]
-			leaveid := args[2]
+			leaveid := args[4]
 			from := &fromDate
 			to := &toDate
-			msgClient := types.NewApplyLeaveRequest(address, reason, leaveid, from, to)
+			msgClient := types.NewApplyLeaveRequest(address, reason, from, to, leaveid)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
+
+// To accept leave
 func AcceptLeaveCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "Apply Leave",
-		Short: "",
-		Long:  "",
+		Use:     "accept-leave [address] [leaveid] [status]",
+		Short:   "To accept leave",
+		Long:    `This is done by the admin to accept or reject leave which are submitted by the student`,
+		Args:    cobra.ExactArgs(3),
+		Example: "./simd tx coslms accept-leave[admin] [leaveid] [status] --from [val_name] --chain-id testnet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				panic(err)
 			}
-			admin := args[0]
+			admin := clientCtx.GetFromAddress().String()
+			address := args[0]
 			leaveid := args[1]
 			status := args[2]
-			msgClient := types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_REJECTED)
-			if status == "0" {
-				msgClient = types.NewAcceptLeaveRequest(admin, leaveid, types.LeaveStatus_STATUS_ACCEPTED)
+			var msgClient *types.AcceptLeaveRequest
+			if status == "2" {
+				msgClient = types.NewAcceptLeaveRequest(admin, address, leaveid, types.LeaveStatus_STATUS_REJECTED)
+			} else if status == "1" {
+				msgClient = types.NewAcceptLeaveRequest(admin, address, leaveid, types.LeaveStatus_STATUS_ACCEPTED)
+			} else {
+				msgClient = types.NewAcceptLeaveRequest(admin, address, leaveid, types.LeaveStatus_STATUS_UNDEFINED)
+
 			}
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msgClient)
+
 		},
 	}
+	flags.AddTxFlagsToCmd(cmd)
 	return cmd
 }
-func init() {
-	rootCmd.AddCommand(AddStudentCmd())
-	rootCmd.AddCommand(RegisterAdminCmd())
-	rootCmd.AddCommand(ApplyLeaveCmd())
-	rootCmd.AddCommand(AcceptLeaveCmd())
 
-	// Here you will define your flags and configuration settings.
+// 	// Here you will define your flags and configuration settings.
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// txCmd.PersistentFlags().String("foo", "", "A help for foo")
+// 	// Cobra supports Persistent Flags which will work for this command
+// 	// and all subcommands, e.g.:
+// 	// txCmd.PersistentFlags().String("foo", "", "A help for foo")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// txCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
+// 	// Cobra supports local flags which will only run when this command
+// 	// is called directly, e.g.:
+// 	// txCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+// }

@@ -3,8 +3,7 @@ package keeper
 import (
 	"fmt"
 	"log"
-
-	// "x/lms/types"
+	"strconv"
 
 	"coslms/x/lms/types"
 
@@ -25,9 +24,11 @@ func (k Keeper) AddStudents(ctx sdk.Context, addstudentreq *types.AddStudentRequ
 				log.Fatal(err)
 			}
 			store.Set(types.StudentStoreKey(stud.Address), marshalAddStudents)
-			//k.GetStudent(ctx, sdk.AccAddress("lms1").String())
+			std := types.AddStudentRequest{}
+			k.cdc.Unmarshal(store.Get(types.StudentStoreKey(stud.Address)), &std)
+
 		}
-		return ""
+		return "Students Added Successfully"
 
 	}
 }
@@ -42,7 +43,6 @@ func (k Keeper) RegisterAdmins(ctx sdk.Context, registeradminreq *types.Register
 	} else {
 
 		store := ctx.KVStore(k.storekey)
-		//key := types.StudentKey
 		k.cdc.MustMarshal(registeradminreq)
 
 		marshalAdmin, err := k.cdc.Marshal(registeradminreq)
@@ -78,7 +78,20 @@ func (k Keeper) ApplyLeaves(ctx sdk.Context, applyleavereq *types.ApplyLeaveRequ
 		if err != nil {
 			panic(err)
 		}
-		store.Set(types.ApplyLeavesStoreKey(applyleavereq.LeaveId, applyleavereq.Address), marshalApplyLeave)
+		address := types.LeavesCounterKey(applyleavereq.Address)
+		counter := store.Get(address)
+		if counter == nil {
+			store.Set(address, []byte("1"))
+		} else {
+			c, err := strconv.Atoi(string(counter))
+			if err != nil {
+				panic(err)
+			}
+			c = c + 1
+			store.Set(address, []byte(fmt.Sprint(c)))
+		}
+		//counter = store.Get(address)
+		store.Set(types.ApplyLeavesStoreKey(applyleavereq.Address, applyleavereq.LeaveId), marshalApplyLeave)
 	}
 	return "Leave Applied Successfully"
 }
@@ -100,49 +113,107 @@ func (k Keeper) AcceptLeaves(ctx sdk.Context, acceptleavereq *types.AcceptLeaveR
 		if err != nil {
 			panic(err)
 		}
-		store.Set(types.AcceptLeavesStoreKey(acceptleavereq.Admin, acceptleavereq.LeaveId), marshalAcceptLeave)
+		store.Set(types.AcceptLeavesStoreKey(acceptleavereq.Address, acceptleavereq.LeaveId), marshalAcceptLeave)
 	}
 	return "Leave Accepted"
 }
 
-// Function to GET STUDENT
-func (k Keeper) GetStudent(ctx sdk.Context) {
+// Function to GET STUDENTS
+func (k Keeper) GetStudentsQuery(ctx sdk.Context, req *types.GetStudentsRequest) []*types.Student {
 	store := ctx.KVStore(k.storekey)
-	var t types.Student
+	var students []*types.Student
 	itr := store.Iterator(types.StudentKey, nil)
 	for ; itr.Valid(); itr.Next() {
+		var t types.Student
 		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
+		students = append(students, &t)
 
 	}
-
+	return students
 }
 
 // Function to GET ADMIN
-func (k Keeper) GetAdmin(ctx sdk.Context, Address string) []byte {
+func (k Keeper) GetAdminQuery(ctx sdk.Context, Address string) (*types.RegisterAdminRequest, error) {
+
 	if _, err := sdk.AccAddressFromBech32(Address); err != nil {
+
 		panic(err)
 	}
 	store := ctx.KVStore(k.storekey)
-	return store.Get(types.AdminStoreKey(Address))
+	admin := store.Get(types.AdminStoreKey(Address))
+	if admin == nil {
+		panic("Admin not found")
+	}
+	var res types.RegisterAdminRequest
+	k.cdc.Unmarshal(admin, &res)
+	return &res, nil
 }
 
-func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, applytleave types.GetLeaveRequestsRequest) {
+// Function to GET LEAVES
+func (k Keeper) GetLeaveRequestsQuery(ctx sdk.Context, req *types.GetLeaveRequestsRequest) *types.GetLeaveRequestsResponse {
 	store := ctx.KVStore(k.storekey)
-	var t types.ApplyLeaveRequest
+	//var response *types.GetLeaveRequestsResponse
+	var leaves []*types.ApplyLeaveRequest
 	itr := store.Iterator(types.ApplyLeavesKey, nil)
+
 	for ; itr.Valid(); itr.Next() {
-		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
+		var leave types.ApplyLeaveRequest
+		k.cdc.Unmarshal(itr.Value(), &leave)
+		leaves = append(leaves, &leave)
+	}
+	return &types.GetLeaveRequestsResponse{
+		Leaverequests: leaves,
 	}
 }
 
-func (k Keeper) GetApprovedLeaves(ctx sdk.Context, approveleaves types.GetLeaveApprovedRequestsRequest) {
+// Function to GET APPROVED LEAVES
+func (k Keeper) GetApprovedLeaves(ctx sdk.Context, req *types.GetLeaveApprovedRequestsRequest) []*types.AcceptLeaveRequest {
 	store := ctx.KVStore(k.storekey)
-	var t types.AcceptLeaveRequest
+	var leaves []*types.AcceptLeaveRequest
 	itr := store.Iterator(types.AcceptLeavesKey, nil)
 	for ; itr.Valid(); itr.Next() {
-		k.cdc.Unmarshal(itr.Value(), &t)
-		fmt.Println(t)
+		var leave types.AcceptLeaveRequest
+		k.cdc.Unmarshal(itr.Value(), &leave)
+		leaves = append(leaves, &leave)
 	}
+	return leaves
+}
+
+// Function to GET STUDENT
+func (k Keeper) GetStudentQuery(ctx sdk.Context, address string) (*types.Student, error) {
+	store := ctx.KVStore(k.storekey)
+	student := store.Get(types.StudentStoreKey(address))
+	if student == nil {
+		panic("Student not found")
+	}
+	var res types.Student
+	k.cdc.MustUnmarshal(student, &res)
+	return &res, nil
+}
+
+// Function to GET LEAVE STATUS
+func (k Keeper) GetLeaveStatusQuery(ctx sdk.Context, admin string, LeaveId string) (req *types.GetLeaveStatusResponse, err error) {
+	store := ctx.KVStore(k.storekey)
+	leave := store.Get(types.AcceptLeavesStoreKey(admin, LeaveId))
+	if leave == nil {
+		panic("Leave with mentioned Id is not found")
+
+	}
+	k.cdc.Unmarshal(leave, req)
+	return req, err
+}
+
+// Function to GET ADMINS
+func (k Keeper) GetAdminsQuery(ctx sdk.Context, req *types.GetAdminsRequest) []*types.RegisterAdminRequest {
+	store := ctx.KVStore(k.storekey)
+	var admins []*types.RegisterAdminRequest
+	itr := store.Iterator(types.AdminKey, nil)
+	for ; itr.Valid(); itr.Next() {
+		var t types.RegisterAdminRequest
+		k.cdc.Unmarshal(itr.Value(), &t)
+		admins = append(admins, &t)
+
+	}
+	return admins
+
 }

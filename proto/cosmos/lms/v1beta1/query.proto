@@ -8,15 +8,28 @@ package cosmos.lms.v1beta1;
  import "google/api/annotations.proto" ; 
 
 service Query {
+    
     rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse){
-        option (google.api.http).get   = "/cosmos/lms/v1beta1/studentid";
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/getstudents";
     };
     rpc GetLeaveRequests(GetLeaveRequestsRequest) returns (GetLeaveRequestsResponse){
-        option (google.api.http).get   = "/cosmos/lms/v1beta1/leaveid";
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/getleaverequests";
     };
     rpc GetLeaveApprovedRequests(GetLeaveApprovedRequestsRequest) returns (GetLeaveApprovedRequestsResponse){
-        option (google.api.http).get   = "/cosmos/lms/v1beta1/leaveid";
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/getapprovedrequests";
     };
+    rpc GetStudent(GetStudentRequest)returns(GetStudentResponse){
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/getstudent";
+    };
+    rpc GetAdmin(GetAdminRequest)returns(GetAdminResponse){
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/getadmin";
+    };
+    rpc GetLeaveStatus(GetLeaveStatusRequest)returns(GetLeaveStatusResponse){
+        option (google.api.http).get   = "/cosmos/lms/v1beta1/getleavestatus";
+    };
+    rpc GetAdmins(GetAdminsRequest)returns(GetAdminsResponse){
+        option (google.api.http).get ="/cosmos/lms/v1beta1/getadmins";
+    }
 }
 
 message GetStudentsRequest {
@@ -27,6 +40,12 @@ message GetStudentsResponse {
     repeated Student students = 1;
 }
 
+message GetAdminRequest{
+    string Address=1;
+}
+message GetAdminResponse{
+    RegisterAdminRequest admin=1;
+}
 message GetLeaveRequestsRequest {
     
 }
@@ -40,6 +59,27 @@ message GetLeaveApprovedRequestsRequest {
 }
 
 message GetLeaveApprovedRequestsResponse {
-     repeated ApplyLeaveRequest leaverequests = 1;
+     repeated AcceptLeaveRequest leaverequests = 1;
  }
+message GetStudentRequest{
+   string Address=1;
 
+}
+message GetStudentResponse{
+    Student student=1;
+}
+message GetAdminsRequest{
+    
+}
+message GetAdminsResponse{
+    repeated RegisterAdminRequest admin=1;
+}
+message GetLeaveStatusRequest{
+    
+    string leave_id=2;
+    string admin=1;
+}
+message GetLeaveStatusResponse{
+    LeaveStatus leave=1;
+    
+}

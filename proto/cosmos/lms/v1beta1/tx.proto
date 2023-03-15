@@ -34,7 +34,7 @@ message AddStudentRequest {
 
 message AddStudentResponse{}
 
-message ApplyLeaveRequest {   
+message ApplyLeaveRequest {  
     string address = 1;   
     string reason = 2;  
     google.protobuf.Timestamp from = 3 [(gogoproto.stdtime) = true];  
@@ -53,9 +53,10 @@ enum LeaveStatus {
 }
 
 message AcceptLeaveRequest {
-    string admin = 1;   
-    string leave_id = 2;   
-    LeaveStatus status = 3;
+    string admin = 1; 
+    string address=2;  
+    string leave_id = 3;   
+    LeaveStatus status = 4;
 }
 
 message AcceptLeaveResponse {
@@ -63,8 +64,8 @@ message AcceptLeaveResponse {
 }
 
 service Msg {
-    rpc RegisterAdmin(RegisterAdminRequest) returns (RegisterAdminResponse);
-    rpc AddStudent(AddStudentRequest) returns (AddStudentResponse);
-    rpc ApplyLeave(ApplyLeaveRequest) returns  (ApplyLeaveResponse);
-    rpc AcceptLeave(AcceptLeaveRequest) returns (AcceptLeaveResponse);
+    rpc AdminRegister(RegisterAdminRequest) returns (RegisterAdminResponse){};
+    rpc StudentAdd(AddStudentRequest) returns (AddStudentResponse){};
+    rpc LeaveApply(ApplyLeaveRequest) returns  (ApplyLeaveResponse){};
+    rpc LeaveAccept(AcceptLeaveRequest) returns (AcceptLeaveResponse){};
 }
