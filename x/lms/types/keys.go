@@ -12,8 +12,7 @@ var (
 	StudentKey      = []byte{0x02}
 	ApplyLeavesKey  = []byte{0x03}
 	AcceptLeavesKey = []byte{0x04}
-	sequenceKey     = []byte{0x05}
-	CounterKey      = []byte{0x06}
+	CounterKey      = []byte{0x05}
 )
 
 // key generation for admin store
@@ -34,21 +33,20 @@ func StudentStoreKey(studentID string) []byte {
 
 // key generation for accept leaves store
 func AcceptLeavesStoreKey(admin string, leaveID string) []byte {
-	key := make([]byte, len(AcceptLeavesKey)+len(admin)+len(sequenceKey)+len(leaveID))
+	key := make([]byte, len(AcceptLeavesKey)+len(admin)+len(leaveID))
 	copy(key, AcceptLeavesKey)
 	copy(key[len(AcceptLeavesKey):], admin)
-	copy(key, sequenceKey)
-	copy(key[len(sequenceKey):], leaveID)
+	copy(key[len(AcceptLeavesKey):], leaveID)
 	return key
 }
 
 // key generation for apply leaves store
 func ApplyLeavesStoreKey(student string, leaveID string) []byte {
-	key := make([]byte, len(ApplyLeavesKey)+len(student)+len(sequenceKey)+len(leaveID))
+	key := make([]byte, len(ApplyLeavesKey)+len(student)+len(leaveID))
 	copy(key, ApplyLeavesKey)
 	copy(key[len(ApplyLeavesKey):], student)
-	copy(key, sequenceKey)
-	copy(key[len(sequenceKey):], leaveID)
+	//copy(key, sequenceKey)
+	copy(key[len(ApplyLeavesKey):], leaveID)
 	return key
 }
 func LeavesCounterKey(id string) []byte {
